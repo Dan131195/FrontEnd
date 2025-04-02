@@ -15,9 +15,14 @@ const NavbarComponent = () => {
   return (
     <div className="container-fluid bg-primary">
       <Container className=" bg-primary">
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-          <Link className="navbar-brand" to="/">
-            Clinica Veterinaria
+        <nav className="navbar navbar-expand-lg bg-primary">
+          <Link className="navbar-brand text-white" to="/">
+            <img
+              src="../src/assets/img/logo.jpg"
+              alt="Logo"
+              className="logoClinica me-2"
+            />
+            ClinicaVet
           </Link>
           {/* {isAuthenticated ? (
         <button onClick={handleLogout} className="btn btn-outline-light ms-2">
@@ -39,9 +44,9 @@ const NavbarComponent = () => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarNav">
-            <div className="d-flex justify-content-between align-items-center w-100">
+            <div className="d-flex justify-content-between align-items-center w-100 ">
               <div>
-                <ul className="navbar-nav ms-auto">
+                <ul className="navbar-nav ms-auto text-white">
                   <li className="nav-item">
                     <Link className="nav-link" to="/animali/list">
                       Registro Animali
