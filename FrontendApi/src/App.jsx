@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavbarComponent from "./Components/NavbarComponent";
 import AnimaleList from "./Components/AnimaleList";
@@ -25,5 +26,32 @@ const App = () => {
     </Router>
   );
 };
+
+import "./App.css";
+import Home from "./components/Home";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  );
+}
+
+function AppContent() {
+  return (
+    <>
+      <MyNavbar />
+      <Container>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<PagError />} />
+        </Routes>
+      </Container>
+      <MyFooter />
+    </>
+  );
+}
+
 
 export default App;
