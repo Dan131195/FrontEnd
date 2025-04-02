@@ -4,3 +4,11 @@
   padding: 2rem;
   text-align: center;
 }
+
+#homeImg {
+  height: "100vh";
+  background-image: "../assets/0001-veterinari.jpg";
+  background-size: "cover";
+  background-position: "center";
+  background-repeat: "no-repeat";
+}
