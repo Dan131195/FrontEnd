@@ -3,6 +3,7 @@ import NavbarComponent from "./Components/NavbarComponent";
 import AnimaleList from "./Components/AnimaleList";
 import AnimaleForm from "./Components/AnimaleForm";
 import VisitaForm from "./Components/VisitaForm";
+import VisiteList from "./components/VisiteList";
 import VenditaForm from "./Components/VenditaForm";
 import VenditaList from "./Components/VenditaList";
 import RicoveriList from "./Components/RicoveriList";
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/animali/nuovo" element={<AnimaleForm />} />
           <Route path="/animali/modifica/:id" element={<AnimaleEditForm />} />
           <Route path="/visite/nuova" element={<VisitaForm />} />
+          <Route path="/visite" element={<VisiteList />} />
           <Route path="/vendite/nuova" element={<VenditaForm />} />
           <Route path="/vendite" element={<VenditaList />} />
           <Route path="/ricoveri" element={<RicoveriList />} />
