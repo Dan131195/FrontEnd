@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const AnimaleForm = () => {
   const [form, setForm] = useState({
@@ -151,6 +152,9 @@ const AnimaleForm = () => {
         <button type="submit" className="btn btn-success mt-4">
           Salva Animale
         </button>
+        <Link className="btn btn-secondary mt-4 ms-2" to="/animali/list">
+          Indietro
+        </Link>
       </form>
     </div>
   );

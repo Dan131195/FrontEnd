@@ -3,15 +3,24 @@ import NavbarComponent from "./Components/NavbarComponent";
 import AnimaleList from "./Components/AnimaleList";
 import AnimaleForm from "./Components/AnimaleForm";
 import VisitaForm from "./Components/VisitaForm";
-import VisiteList from "./components/VisiteList";
+import VisiteList from "./Components/VisiteListe";
 import VenditaForm from "./Components/VenditaForm";
 import VenditaList from "./Components/VenditaList";
-import RicoveriList from "./Components/RicoveriList";
+import RicoveriAttiviList from "./Components/RicoveriAttiviList";
+import RicoveriList from "./Components/RicoveriList.jsx";
 import HomePage from "./Components/HomePage";
 import AnimaleEditForm from "./Components/AnimaleEditForm";
+import RicoveroEditForm from "./Components/RicoveroEditForm";
 import PrivateRoute from "./Components/PrivateRoute";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import AnimaleDettaglio from "./Components/AnimaleDettaglio";
+import RicoveroDettaglio from "./Components/RicoveroDettaglio.jsx";
+import LoginForm from "./Components/LoginForm";
+import ProdottoEditForm from "./Components/ProdottoEditForm.jsx";
+import ProdottoDettaglio from "./Components/ProdottoDettaglio.jsx";
+import ProdottoForm from "./Components/ProdottoForm.jsx";
+import ProdottoList from "./Components/ProdottoList.jsx";
 
 const App = () => {
   return (
@@ -21,6 +30,7 @@ const App = () => {
       <div className="container mt-4">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginForm />} />
           <Route path="/animali/list" element={<AnimaleList />} />
           <Route path="/animali/nuovo" element={<AnimaleForm />} />
           <Route path="/animali/modifica/:id" element={<AnimaleEditForm />} />
@@ -29,6 +39,20 @@ const App = () => {
           <Route path="/vendite/nuova" element={<VenditaForm />} />
           <Route path="/vendite" element={<VenditaList />} />
           <Route path="/ricoveri" element={<RicoveriList />} />
+          <Route path="/ricoveri/attivi" element={<RicoveriAttiviList />} />
+          <Route path="/animali/dettaglio/:id" element={<AnimaleDettaglio />} />
+          <Route path="/ricovero/modifica/:id" element={<RicoveroEditForm />} />
+          <Route
+            path="/ricovero/dettaglio/:id"
+            element={<RicoveroDettaglio />}
+          />
+          <Route path="/prodotto/modifica/:id" element={<ProdottoEditForm />} />
+          <Route
+            path="/prodotto/dettaglio/:id"
+            element={<ProdottoDettaglio />}
+          />
+          <Route path="/prodotto/nuovo" element={<ProdottoForm />} />
+          <Route path="/prodotti" element={<ProdottoList />} />
         </Routes>
       </div>
       {/* </PrivateRoute> */}

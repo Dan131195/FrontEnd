@@ -1,14 +1,15 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  height: 100vh;
+  background-image: url("https://img.pgol.it/meta/0100-veterinari.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-
-#homeImg {
-  height: "100vh";
-  background-image: "../assets/0001-veterinari.jpg";
-  background-size: "cover";
-  background-position: "center";
-  background-repeat: "no-repeat";
+.myContainer {
+  background-color: #ffffffbe;
+  border-radius: 10px;
+}
+.myContainer2 {
+  background-color: #ffffffdd;
+  border-radius: 10px;
 }

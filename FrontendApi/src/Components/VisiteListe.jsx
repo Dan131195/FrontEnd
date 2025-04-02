@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const VisiteList = () => {
   const [visite, setVisite] = useState([]);
@@ -20,7 +20,7 @@ const VisiteList = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDeleteVisita = async (id) => {
     if (!window.confirm("Sei sicuro di voler eliminare questa visita?")) return;
 
     try {
@@ -34,13 +34,16 @@ const VisiteList = () => {
     }
   };
 
-  const handleEdit = (id) => {
+  const handleEditVisita = (id) => {
     navigate(`/visite/modifica/${id}`);
   };
 
   return (
-    <div className="card p-4">
+    <div className="myContainer p-2 border border-1 rounded-2">
       <h3 className="mb-3">Elenco Visite Veterinarie</h3>
+      <Link className=" btn btn-primary mb-3" to="/visite">
+        Aggiungi una visita
+      </Link>
       {visite.length === 0 ? (
         <p>Nessuna visita registrata.</p>
       ) : (
@@ -63,18 +66,20 @@ const VisiteList = () => {
                   <td>{v.curaPrescritta}</td>
                   <td>{v.animaleId}</td>
                   <td>
-                    <button
-                      className="btn btn-warning btn-sm me-2"
-                      onClick={() => handleEdit(v.visitaId)}
-                    >
-                      Modifica
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(v.visitaId)}
-                    >
-                      Elimina
-                    </button>
+                    <div className="d-flex align-items-center justify-content-between">
+                      <button
+                        className="btn btn-warning btn-sm me-1"
+                        onClick={() => handleEditVisita(v.visitaId)}
+                      >
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDeleteVisita(v.visitaId)}
+                      >
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
