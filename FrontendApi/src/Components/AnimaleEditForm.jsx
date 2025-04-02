@@ -45,7 +45,7 @@ const AnimaleEditForm = () => {
   if (!animale) return <p>Caricamento...</p>;
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 myContainer2 py-2">
       <h2>Modifica Animale</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

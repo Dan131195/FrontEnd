@@ -5,7 +5,6 @@ const HomePage = () => {
     <div
       className="d-flex flex-column justify-content-center align-items-center text-white text-center"
       id="homeImg"
-      style={{}}
     >
       <div className="bg-dark bg-opacity-75 p-5 rounded">
         <h1 className="mb-3">Clinica Veterinaria</h1>
