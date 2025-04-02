@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NavbarComponent from "./Components/NavbarComponent";
+import AnimaleList from "./Components/AnimaleList";
+import AnimaleForm from "./Components/AnimaleForm";
+import VisitaForm from "./Components/VisitaForm";
+import VenditaForm from "./Components/VenditaForm";
+import RicoveriList from "./Components/RicoveriList";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <NavbarComponent />
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/" element={<AnimaleList />} />
+          <Route path="/animali/nuovo" element={<AnimaleForm />} />
+          <Route path="/visite/nuova" element={<VisitaForm />} />
+          <Route path="/vendite/nuova" element={<VenditaForm />} />
+          <Route path="/vendite" element={<VenditaList />} />
+          <Route path="/ricoveri" element={<RicoveriList />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </Router>
+  );
+};
 
-export default App
+export default App;
