@@ -43,11 +43,6 @@ const NavbarComponent = () => {
             </Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/animali/nuovo">
-              Registra Animale
-            </Link>
-          </li>
-          <li className="nav-item">
             <Link className="nav-link" to="/visite/nuova">
               Visita
             </Link>

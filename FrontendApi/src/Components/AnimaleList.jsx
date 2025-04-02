@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const AnimaleList = () => {
   const [animali, setAnimali] = useState([]);
@@ -43,7 +43,12 @@ const AnimaleList = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Elenco Animali Registrati</h3>
+      <h2 className="mb-3 text-center">Elenco Animali Registrati</h2>
+
+      <Link className="btn btn-primary mb-4 w-25 m-auto" to="/animali/nuovo">
+        Registra Animale
+      </Link>
+
       {animali.length === 0 ? (
         <p>Nessun animale registrato.</p>
       ) : (
