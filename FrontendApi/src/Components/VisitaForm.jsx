@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 const VisitaForm = () => {
   const [form, setForm] = useState({
@@ -17,7 +16,16 @@ const VisitaForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/visite", form);
+      const res = await fetch("https://localhost:7028/api/visite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) throw new Error("Errore HTTP: " + res.status);
+
       alert("Visita registrata con successo!");
     } catch (error) {
       console.error(error);

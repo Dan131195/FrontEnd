@@ -6,7 +6,7 @@ const RicoveriList = () => {
   useEffect(() => {
     const fetchRicoveri = async () => {
       try {
-        const res = await fetch("http://localhost:7028/api/ricoveri/attivi");
+        const res = await fetch("https://localhost:7028/api/ricoveri/attivi");
         if (!res.ok) throw new Error("Errore nel recupero dei ricoveri");
         const data = await res.json();
         setRicoveri(data);

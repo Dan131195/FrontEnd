@@ -40,6 +40,16 @@ const NavbarComponent = () => {
               Vendita Farmacia
             </Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/vendite">
+              Lista Vendite
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/ricoveri">
+              Ricoveri Attivi
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>

@@ -1,10 +1,10 @@
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavbarComponent from "./Components/NavbarComponent";
 import AnimaleList from "./Components/AnimaleList";
 import AnimaleForm from "./Components/AnimaleForm";
 import VisitaForm from "./Components/VisitaForm";
 import VenditaForm from "./Components/VenditaForm";
+import VenditaList from "./Components/VenditaList";
 import RicoveriList from "./Components/RicoveriList";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -26,32 +26,5 @@ const App = () => {
     </Router>
   );
 };
-
-import "./App.css";
-import Home from "./components/Home";
-
-function App() {
-  return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
-  );
-}
-
-function AppContent() {
-  return (
-    <>
-      <MyNavbar />
-      <Container>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<PagError />} />
-        </Routes>
-      </Container>
-      <MyFooter />
-    </>
-  );
-}
-
 
 export default App;

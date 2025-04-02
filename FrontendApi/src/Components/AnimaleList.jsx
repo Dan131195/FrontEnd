@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 const AnimaleList = () => {
   const [animali, setAnimali] = useState([]);
@@ -7,8 +6,10 @@ const AnimaleList = () => {
   useEffect(() => {
     const fetchAnimali = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/animali");
-        setAnimali(res.data);
+        const res = await fetch("https://localhost:7028/api/Animale");
+        if (!res.ok) throw new Error("Errore nel recupero degli animali");
+        const data = await res.json();
+        setAnimali(data);
       } catch (err) {
         console.error("Errore nel recupero degli animali:", err);
       }

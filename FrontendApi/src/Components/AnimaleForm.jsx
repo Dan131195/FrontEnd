@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 
 const AnimaleForm = () => {
   const [form, setForm] = useState({
@@ -26,7 +25,16 @@ const AnimaleForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/animali", form);
+      const res = await fetch("https://localhost:7028/api/animale", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) throw new Error("Errore HTTP: " + res.status);
+
       alert("Animale registrato con successo!");
     } catch (error) {
       console.error(error);

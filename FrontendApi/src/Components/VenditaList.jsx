@@ -6,7 +6,7 @@ const VenditaList = () => {
   useEffect(() => {
     const fetchVendite = async () => {
       try {
-        const res = await fetch("http://localhost:7028/api/farmacia/vendita");
+        const res = await fetch("https://localhost:7028/api/farmacia/vendita");
         if (!res.ok) throw new Error("Errore nel recupero delle vendite");
         const data = await res.json();
         setVendite(data);
