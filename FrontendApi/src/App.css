@@ -13,3 +13,11 @@ body {
   background-color: #ffffffdd;
   border-radius: 10px;
 }
+.logoClinica {
+  width: 3rem;
+  border-radius: 50%;
+}
+.nav-link {
+  color: #fff !important;
+  font-size: 1.2em !important;
+}

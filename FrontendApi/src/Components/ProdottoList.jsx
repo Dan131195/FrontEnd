@@ -62,50 +62,61 @@ const ProdottoList = () => {
       </button>
 
       {prodotti.length === 0 ? (
-        <p>Nessun prodotto disponibile.</p>
+        <p className="mt-3">Nessun prodotto disponibile.</p>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-bordered">
-            <thead className="table-light">
-              <tr>
-                <th>Nome</th>
-                <th>Tipo</th>
-                <th>Ditta Fornitrice</th>
-                <th>Uso</th>
-                <th>Azioni</th>
-              </tr>
-            </thead>
-            <tbody>
-              {prodotti.map((p) => (
-                <tr key={p.prodottoId}>
-                  <td>{p.nome}</td>
-                  <td>{p.tipo}</td>
-                  <td>{p.dittaFornitrice}</td>
-                  <td>{p.numeroCassetto}</td>
-                  <td>
-                    <button
-                      className="btn btn-info btn-sm me-2"
-                      onClick={() => handleDettaglioProdotto(p.prodottoId)}
-                    >
-                      <i className="bi bi-info-circle"></i>
-                    </button>
-                    <button
-                      className="btn btn-warning btn-sm me-2"
-                      onClick={() => handleEditProdotto(p.prodottoId)}
-                    >
-                      <i className="bi bi-pencil-square"></i>
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(p.prodottoId)}
-                    >
-                      <i className="bi bi-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="row mt-4">
+          {prodotti.map((p) => (
+            <div key={p.prodottoId} className="col-md-6 col-lg-3 mb-4">
+              <div className="card h-100 shadow-sm">
+                {p.tipo === "Medicinale" ? (
+                  <img
+                    src="https://www.shutterstock.com/image-vector/veterinary-icon-little-paw-cross-600nw-2428377771.jpg"
+                    class="card-img-top"
+                    alt="Logo Medicinale"
+                  />
+                ) : (
+                  <img
+                    src="https://static.vecteezy.com/ti/vettori-gratis/t1/50730314-verde-veterinario-dieta-etichetta-icona-animale-domestico-ciotola-e-dieta-cibo-gatto-cibo-proprieta-cibo-confezione-etichetta-vettoriale.jpg"
+                    class="card-img-top"
+                    alt="Logo Alimento"
+                    className="p-4"
+                  />
+                )}
+                <div className="card-body">
+                  <h5 className="card-title">{p.nome}</h5>
+                  <p className="mb-1">
+                    <strong>Tipo:</strong> {p.tipo}
+                  </p>
+                  <p className="mb-1">
+                    <strong>Ditta Fornitrice:</strong> {p.dittaFornitrice}
+                  </p>
+                  <p className="mb-0">
+                    <strong>Uso:</strong> {p.prodottoUso}
+                  </p>
+                </div>
+                <div className="card-footer bg-transparent border-top-0 d-flex justify-content-end">
+                  <button
+                    className="btn btn-info btn-sm me-2"
+                    onClick={() => handleDettaglioProdotto(p.prodottoId)}
+                  >
+                    <i className="bi bi-info-circle"></i>
+                  </button>
+                  <button
+                    className="btn btn-warning btn-sm me-2"
+                    onClick={() => handleEditProdotto(p.prodottoId)}
+                  >
+                    <i className="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(p.prodottoId)}
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

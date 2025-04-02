@@ -21,6 +21,7 @@ import ProdottoEditForm from "./Components/ProdottoEditForm.jsx";
 import ProdottoDettaglio from "./Components/ProdottoDettaglio.jsx";
 import ProdottoForm from "./Components/ProdottoForm.jsx";
 import ProdottoList from "./Components/ProdottoList.jsx";
+import RicoveroForm from "./Components/RicoveroForm.jsx";
 
 const App = () => {
   return (
@@ -31,21 +32,25 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginForm />} />
+
           <Route path="/animali/list" element={<AnimaleList />} />
           <Route path="/animali/nuovo" element={<AnimaleForm />} />
           <Route path="/animali/modifica/:id" element={<AnimaleEditForm />} />
+          <Route path="/animali/dettaglio/:id" element={<AnimaleDettaglio />} />
+
           <Route path="/visite/nuova" element={<VisitaForm />} />
           <Route path="/visite" element={<VisiteList />} />
-          <Route path="/vendite/nuova" element={<VenditaForm />} />
-          <Route path="/vendite" element={<VenditaList />} />
+
           <Route path="/ricoveri" element={<RicoveriList />} />
           <Route path="/ricoveri/attivi" element={<RicoveriAttiviList />} />
-          <Route path="/animali/dettaglio/:id" element={<AnimaleDettaglio />} />
+          <Route path="/ricoveri/attivi" element={<RicoveriAttiviList />} />
+          <Route path="/ricovero/nuovo" element={<RicoveroForm />} />
           <Route path="/ricovero/modifica/:id" element={<RicoveroEditForm />} />
           <Route
             path="/ricovero/dettaglio/:id"
             element={<RicoveroDettaglio />}
           />
+
           <Route path="/prodotto/modifica/:id" element={<ProdottoEditForm />} />
           <Route
             path="/prodotto/dettaglio/:id"
@@ -53,6 +58,9 @@ const App = () => {
           />
           <Route path="/prodotto/nuovo" element={<ProdottoForm />} />
           <Route path="/prodotti" element={<ProdottoList />} />
+
+          <Route path="/vendite/nuova" element={<VenditaForm />} />
+          <Route path="/vendite" element={<VenditaList />} />
         </Routes>
       </div>
       {/* </PrivateRoute> */}
