@@ -10,7 +10,7 @@ const AnimaleForm = () => {
     coloreMantello: "",
     dataNascita: "",
     microchipPresente: false,
-    numeroMicrochip: "",
+    numeroMicrochip: null,
     nomeProprietario: "",
     cognomeProprietario: "",
     codiceFiscaleProprietario: "",
@@ -18,20 +18,39 @@ const AnimaleForm = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+    if (name === "microchipPresente") {
+      setForm((prev) => ({
+        ...prev,
+        microchipPresente: checked,
+        numeroMicrochip: checked ? prev.numeroMicrochip : null,
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formToSend = {
+      ...form,
+      numeroMicrochip: form.microchipPresente ? form.numeroMicrochip : null,
+    };
+
     try {
-      await fetchWithAuth("https://localhost:7028/api/animale", "POST", form);
-      alert("Animale registrato con successo!");
+      await fetchWithAuth(
+        "https://localhost:7028/api/animale",
+        "POST",
+        formToSend
+      );
+      alert("✅ Animale registrato con successo!");
     } catch (error) {
       console.error(error);
-      alert("Errore nella registrazione dell'animale.");
+      alert("❌ Errore nella registrazione dell'animale.");
     }
   };
 
@@ -84,11 +103,11 @@ const AnimaleForm = () => {
               required
             />
           </div>
-          <div className="col-md-6">
-            <label className="form-label">Presenza Microchip</label>
+          <div className="col-md-6 d-flex align-items-center">
+            <label className="form-label me-3 mb-0">Presenza Microchip</label>
             <input
               type="checkbox"
-              className="form-check-input ms-2"
+              className="form-check-input"
               name="microchipPresente"
               checked={form.microchipPresente}
               onChange={handleChange}
@@ -101,7 +120,7 @@ const AnimaleForm = () => {
                 type="text"
                 className="form-control"
                 name="numeroMicrochip"
-                value={form.numeroMicrochip}
+                value={form.numeroMicrochip || ""}
                 onChange={handleChange}
               />
             </div>

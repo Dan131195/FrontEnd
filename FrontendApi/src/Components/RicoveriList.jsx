@@ -8,6 +8,7 @@ const RicoveriList = () => {
   const [ricoveri, setRicoveri] = useState([]);
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
+  const userRole = localStorage.getItem("ruolo");
 
   useEffect(() => {
     fetchRicoveri();
@@ -70,17 +71,18 @@ const RicoveriList = () => {
   };
 
   return (
-    <div className="container py-4">
-      <div className="card shadow-sm border-0">
-        <div className="card-body myContainer">
+    <div className="py-4">
+      <div className=" myContainer shadow-sm border-0 p-3">
+        <div className="card-body">
           <h2 className="mb-4 text-primary">Ricoveri</h2>
-
-          <button
-            className="btn btn-outline-primary mb-4"
-            onClick={handleAddRicovero}
-          >
-            <i className="bi bi-plus-circle me-2"></i>Aggiungi Ricovero
-          </button>
+          {userRole === "Veterinario" && (
+            <button
+              className="btn btn-outline-primary mb-4"
+              onClick={handleAddRicovero}
+            >
+              <i className="bi bi-plus-circle me-2"></i>Aggiungi Ricovero
+            </button>
+          )}
 
           {ricoveri.length === 0 ? (
             <div className="alert alert-info">
@@ -88,7 +90,7 @@ const RicoveriList = () => {
             </div>
           ) : (
             <div className="table-responsive">
-              <table className="table table-hover align-middle">
+              <table className="table table-hover align-middle table-striped">
                 <thead className="table-primary">
                   <tr>
                     <th>Data Inizio</th>
@@ -96,7 +98,7 @@ const RicoveriList = () => {
                     <th>Tipologia</th>
                     <th>Mantello</th>
                     <th>Microchip</th>
-                    <th>Chiusura Ricovero</th>
+                    <th>Chiusura</th>
                     <th>Azioni</th>
                   </tr>
                 </thead>
@@ -114,7 +116,7 @@ const RicoveriList = () => {
                             className="btn btn-success btn-sm"
                             onClick={() => handleChiudiRicovero(r.ricoveroId)}
                           >
-                            Chiudi Ricovero
+                            <i class="bi bi-x-circle me-1"></i>Chiudi
                           </button>
                         ) : (
                           new Date(r.dataFine).toLocaleDateString()
@@ -128,18 +130,24 @@ const RicoveriList = () => {
                           >
                             <i className="bi bi-info-circle"></i>
                           </button>
-                          <button
-                            className="btn btn-warning"
-                            onClick={() => handleEditRicovero(r.ricoveroId)}
-                          >
-                            <i className="bi bi-pencil-square"></i>
-                          </button>
-                          <button
-                            className="btn btn-danger"
-                            onClick={() => handleDeleteRicovero(r.ricoveroId)}
-                          >
-                            <i className="bi bi-trash"></i>
-                          </button>
+                          {userRole == "Veterinario" && (
+                            <>
+                              <button
+                                className="btn btn-warning"
+                                onClick={() => handleEditRicovero(r.ricoveroId)}
+                              >
+                                <i className="bi bi-pencil-square"></i>
+                              </button>
+                              <button
+                                className="btn btn-danger"
+                                onClick={() =>
+                                  handleDeleteRicovero(r.ricoveroId)
+                                }
+                              >
+                                <i className="bi bi-trash"></i>
+                              </button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>

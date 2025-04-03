@@ -25,10 +25,16 @@ export const fetchWithAuth = async (
 
   const res = await fetch(url, options);
 
+  const text = await res.text();
+
   if (!res.ok) {
-    const message = await res.text();
-    throw new Error(`Errore ${res.status}: ${message}`);
+    throw new Error(`Errore ${res.status}: ${text}`);
   }
 
-  return res.status === 204 ? null : res.json();
+  try {
+    return text ? JSON.parse(text) : null;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
 };

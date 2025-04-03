@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const ProdottoList = () => {
@@ -41,22 +41,27 @@ const ProdottoList = () => {
   const handleDettaglioProdotto = (id) => navigate(`/prodotto/dettaglio/${id}`);
 
   return (
-    <div className="card p-4">
+    <div className="myContainer p-4">
       <h3 className="mb-3">Elenco Prodotti</h3>
+      <div className="d-flex align-items-center">
+        <button
+          className="btn btn-warning btn-sm me-2"
+          onClick={handleAddProdotto}
+        >
+          <i class="bi bi-plus-circle me-1"></i>Aggiungi un prodotto
+        </button>
 
-      <button
-        className="btn btn-warning btn-sm me-2"
-        onClick={handleAddProdotto}
-      >
-        Aggiungi un prodotto
-      </button>
+        <Link className="btn-primary btn" to="/vendite-interne">
+          Registro Vendite
+        </Link>
+      </div>
 
       {prodotti.length === 0 ? (
         <p className="mt-3">Nessun prodotto disponibile.</p>
       ) : (
         <div className="row mt-4">
           {prodotti.map((p) => (
-            <div key={p.prodottoId} className="col-md-6 col-lg-3 mb-4">
+            <div key={p.prodottoId} className="col-6 col-lg-3 mb-4">
               <div className="card h-100 shadow-sm">
                 <img
                   src={
@@ -64,7 +69,7 @@ const ProdottoList = () => {
                       ? "https://www.shutterstock.com/image-vector/veterinary-icon-little-paw-cross-600nw-2428377771.jpg"
                       : "https://static.vecteezy.com/ti/vettori-gratis/t1/50730314-verde-veterinario-dieta-etichetta-icona-animale-domestico-ciotola-e-dieta-cibo-gatto-cibo-proprieta-cibo-confezione-etichetta-vettoriale.jpg"
                   }
-                  className="card-img-top p-3"
+                  className="card-img-top p-4"
                   alt={`Logo ${p.tipo}`}
                 />
                 <div className="card-body">

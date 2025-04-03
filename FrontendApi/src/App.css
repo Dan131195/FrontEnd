@@ -1,9 +1,13 @@
 body {
-  height: 100vh;
+  min-height: 100vh;
   background-image: url("https://img.pgol.it/meta/0100-veterinari.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+.mainContainer {
+  width: 90%;
+  margin: auto;
 }
 .myContainer {
   background-color: #ffffffbe;
@@ -20,4 +24,29 @@ body {
 .nav-link {
   color: #fff !important;
   font-size: 1.2em !important;
+}
+.card:hover,
+button:hover,
+i:hover {
+  transform: scale(1.01);
+}
+
+.nav-link:hover {
+  transform: scale(1.04);
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex-grow: 1;
+}
+.loginBtn:hover {
+  color: #0d6efd !important;
+  font-weight: bold;
+}
+#petsImg {
+  width: 150px;
 }

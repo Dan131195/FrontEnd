@@ -7,6 +7,6 @@ export const getToken = () => {
   if (tokenFromRedux) return tokenFromRedux;
 
   const tokenFromStorage = localStorage.getItem("token");
-  console.log(tokenFromStorage);
+  console.log("getToken : " + tokenFromStorage);
   return tokenFromStorage || null;
 };

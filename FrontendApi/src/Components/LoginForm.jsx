@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../Redux/authSlice";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const LoginForm = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -24,16 +25,43 @@ const LoginForm = () => {
       });
 
       if (!res.ok) throw new Error("Login fallito");
+
       const data = await res.json();
-      console.log(data.token);
+      const token = data.token;
 
-      // Salvo il token nel localStorage
-      localStorage.setItem("token", data.token);
+      // 🔍 Decodifica il token per ottenere info utente
+      const decoded = jwtDecode(token);
 
-      // Lo salvo anche in Redux
-      dispatch(loginSuccess(data.token));
+      const ruolo =
+        decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      const nome =
+        decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+      const email =
+        decoded[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+        ];
 
-      // Reindirizzo l'utente
+      console.log("Ruolo:", ruolo);
+      console.log("Nome:", nome);
+
+      // ✅ Salvo token e info utente in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("ruolo", ruolo);
+      localStorage.setItem("nome", nome);
+      localStorage.setItem("email", email);
+
+      // ✅ Salvo anche in Redux
+      dispatch(
+        loginSuccess({
+          token,
+          user: {
+            ruolo,
+            nome,
+            email,
+          },
+        })
+      );
+
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -42,7 +70,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="card p-4">
+    <div className="myContainer p-4 w-50 m-auto">
       <h3>Login</h3>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -65,7 +93,9 @@ const LoginForm = () => {
             required
           />
         </div>
-        <button className="btn btn-primary">Accedi</button>
+        <button className="btn btn-primary">
+          <i class="bi bi-box-arrow-in-right me-1"></i>Accedi
+        </button>
       </form>
     </div>
   );

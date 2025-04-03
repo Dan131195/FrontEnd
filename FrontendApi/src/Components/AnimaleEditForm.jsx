@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const AnimaleEditForm = () => {
@@ -129,7 +129,12 @@ const AnimaleEditForm = () => {
         </div>
 
         {errore && <div className="alert alert-danger">{errore}</div>}
-        <button className="btn btn-primary">Salva modifiche</button>
+        <button className="btn btn-primary">
+          <i className="bi bi-floppy p-1 me-1 text-white"></i>Salva modifiche
+        </button>
+        <Link className="btn btn-secondary ms-3" to="/animali/list">
+          <i className="bi bi-arrow-left-circle me-1"></i>Indietro
+        </Link>
       </form>
     </div>
   );
