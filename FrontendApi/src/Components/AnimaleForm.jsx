@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchWithAuth } from "../uUils/fetchWithAuth";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const AnimaleForm = () => {
   const [form, setForm] = useState({

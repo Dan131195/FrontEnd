@@ -1,11 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+function safeParse(json) {
+  try {
+    return JSON.parse(json);
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 // Prova a caricare lo stato dal localStorage, se esiste
 const savedToken = localStorage.getItem("token");
 const savedUser = localStorage.getItem("user");
 
 const initialState = {
-  user: savedUser ? JSON.parse(savedUser) : null,
+  user: savedUser ? safeParse(savedUser) : null,
   token: savedToken || null,
   isAuthenticated: !!savedToken,
 };
@@ -20,6 +29,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
 
       // Salva nel localStorage
+      console.log(action.payload.token);
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
     },

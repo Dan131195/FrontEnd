@@ -1,7 +1,7 @@
 import { Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/authSlice";
+import { logout } from "../Redux/authSlice";
 
 const NavbarComponent = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);

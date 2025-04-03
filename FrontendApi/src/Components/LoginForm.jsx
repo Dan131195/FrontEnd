@@ -17,7 +17,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://localhost:7028/api/auth/login", {
+      const res = await fetch("https://localhost:7028/api/account/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -25,6 +25,7 @@ const LoginForm = () => {
 
       if (!res.ok) throw new Error("Login fallito");
       const data = await res.json();
+      console.log(data.token);
 
       // Salvo il token nel localStorage
       localStorage.setItem("token", data.token);
