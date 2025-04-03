@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const AnimaleEditForm = () => {
   const { id } = useParams();
@@ -10,9 +11,9 @@ const AnimaleEditForm = () => {
   useEffect(() => {
     const fetchAnimale = async () => {
       try {
-        const res = await fetch(`https://localhost:7028/api/animale/${id}`);
-        if (!res.ok) throw new Error("Errore nel caricamento dell'animale");
-        const data = await res.json();
+        const data = await fetchWithAuth(
+          `https://localhost:7028/api/animale/${id}`
+        );
         setAnimale(data);
       } catch (err) {
         setErrore(err.message);
@@ -29,14 +30,13 @@ const AnimaleEditForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`https://localhost:7028/api/animale/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(animale),
-      });
+      await fetchWithAuth(
+        `https://localhost:7028/api/animale/${id}`,
+        "PUT",
+        animale
+      );
 
-      if (!res.ok) throw new Error("Errore durante il salvataggio");
-      navigate("/");
+      navigate("/animali/list"); // oppure navigate("/animali/list") se usi una route specifica
     } catch (err) {
       setErrore(err.message);
     }
@@ -129,7 +129,12 @@ const AnimaleEditForm = () => {
         </div>
 
         {errore && <div className="alert alert-danger">{errore}</div>}
-        <button className="btn btn-primary">Salva modifiche</button>
+        <button className="btn btn-primary">
+          <i className="bi bi-floppy p-1 me-1 text-white"></i>Salva modifiche
+        </button>
+        <Link className="btn btn-secondary ms-3" to="/animali/list">
+          <i className="bi bi-arrow-left-circle me-1"></i>Indietro
+        </Link>
       </form>
     </div>
   );

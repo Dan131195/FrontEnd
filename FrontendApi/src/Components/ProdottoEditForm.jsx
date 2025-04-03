@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const ProdottoEditForm = () => {
   const { id } = useParams();
@@ -16,14 +17,12 @@ const ProdottoEditForm = () => {
   useEffect(() => {
     const fetchProdotto = async () => {
       try {
-        const res = await fetch(
+        const data = await fetchWithAuth(
           `https://localhost:7028/api/farmacia/prodotto/${id}`
         );
-        if (!res.ok) throw new Error("Errore nel caricamento del prodotto");
-        const data = await res.json();
         setForm(data);
       } catch (err) {
-        console.error(err);
+        console.error("Errore nel caricamento del prodotto:", err);
       }
     };
 
@@ -38,17 +37,12 @@ const ProdottoEditForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(
+      await fetchWithAuth(
         `https://localhost:7028/api/farmacia/prodotto/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
-        }
+        "PUT",
+        form
       );
-      if (!res.ok) throw new Error("Errore nell'aggiornamento");
+
       alert("Prodotto aggiornato con successo!");
       navigate("/prodotti");
     } catch (err) {

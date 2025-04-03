@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const RicoveroForm = () => {
   const [form, setForm] = useState({
@@ -6,6 +8,8 @@ const RicoveroForm = () => {
     descrizione: "",
     animaleId: "",
   });
+
+  const token = useSelector((state) => state.auth.token);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,15 +20,12 @@ const RicoveroForm = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://localhost:7028/api/ricovero", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) throw new Error("Errore nella registrazione del ricovero");
+      await fetchWithAuth(
+        "https://localhost:7028/api/ricovero",
+        "POST",
+        form,
+        token
+      );
 
       alert("✅ Ricovero registrato con successo!");
       setForm({
@@ -34,7 +35,7 @@ const RicoveroForm = () => {
       });
     } catch (err) {
       console.error("Errore:", err);
-      alert("❌ Errore nella registrazione.");
+      alert("❌ Errore nella registrazione del ricovero.");
     }
   };
 

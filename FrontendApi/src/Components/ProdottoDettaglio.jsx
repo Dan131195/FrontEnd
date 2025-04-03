@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
+import VenditaInternaForm from "./VenditaInternaForm";
 
 const ProdottoDettaglio = () => {
   const { id } = useParams();
@@ -7,14 +9,15 @@ const ProdottoDettaglio = () => {
   const [prodotto, setProdotto] = useState(null);
   const [errore, setErrore] = useState("");
 
+  const [mostraForm, setMostraForm] = useState(false);
+  const [prodottoSelezionato, setProdottoSelezionato] = useState(null);
+
   useEffect(() => {
     const fetchProdotto = async () => {
       try {
-        const res = await fetch(
+        const data = await fetchWithAuth(
           `https://localhost:7028/api/farmacia/prodotto/${id}`
         );
-        if (!res.ok) throw new Error("Errore nel recupero del prodotto");
-        const data = await res.json();
         setProdotto(data);
       } catch (err) {
         setErrore(err.message);
@@ -49,9 +52,26 @@ const ProdottoDettaglio = () => {
         <strong>Numero Cassetto:</strong> {prodotto.numeroCassetto}
       </p>
 
-      <button className="btn btn-secondary mt-3" onClick={() => navigate(-1)}>
-        🔙 Torna Indietro
-      </button>
+      <div>
+        <button className="btn btn-secondary mt-3" onClick={() => navigate(-1)}>
+          <i className="bi bi-arrow-left-circle me-1"></i>Torna Indietro
+        </button>
+        <button
+          className="btn btn-success mt-3 ms-2"
+          onClick={() => {
+            setProdottoSelezionato(prodotto.prodottoId);
+            setMostraForm(true);
+          }}
+        >
+          <i className="bi bi-plus-circle me-1"></i> Registra Vendita
+        </button>
+        {mostraForm && (
+          <VenditaInternaForm
+            prodottoId={prodottoSelezionato}
+            onClose={() => setMostraForm(false)}
+          />
+        )}
+      </div>
     </div>
   );
 };

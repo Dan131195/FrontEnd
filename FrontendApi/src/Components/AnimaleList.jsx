@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const AnimaleList = () => {
   const [animali, setAnimali] = useState([]);
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("ruolo");
 
   useEffect(() => {
     fetchAnimali();
@@ -11,9 +13,7 @@ const AnimaleList = () => {
 
   const fetchAnimali = async () => {
     try {
-      const res = await fetch("https://localhost:7028/api/animale");
-      if (!res.ok) throw new Error("Errore nel recupero degli animali");
-      const data = await res.json();
+      const data = await fetchWithAuth("https://localhost:7028/api/animale");
       setAnimali(data);
     } catch (err) {
       console.error("Errore nel recupero degli animali:", err);
@@ -25,11 +25,7 @@ const AnimaleList = () => {
       return;
 
     try {
-      const res = await fetch(`https://localhost:7028/api/animale/${id}`, {
-        method: "DELETE",
-      });
-      console.log(id);
-      if (!res.ok) throw new Error("Errore nella cancellazione");
+      await fetchWithAuth(`https://localhost:7028/api/animale/${id}`, "DELETE");
       setAnimali(animali.filter((a) => a.id !== id));
       fetchAnimali();
     } catch (err) {
@@ -41,21 +37,40 @@ const AnimaleList = () => {
     navigate(`/animali/modifica/${id}`);
   };
 
-  return (
-    <div className="container py-4 ">
-      <div className="card shadow-sm border-0">
-        <div className="card-body myContainer">
-          <h2 className="mb-4 text-primary">Elenco Animali Registrati</h2>
+  const handleViewDetails = (id) => {
+    navigate(`/animali/dettaglio/${id}`);
+  };
 
-          <Link className="btn btn-outline-primary mb-4" to="/animali/nuovo">
-            <i className="bi bi-plus-circle me-2"></i>Registra Animale
-          </Link>
+  return (
+    <div className="">
+      <div className=" myContainer shadow-sm border-0 p-3">
+        <div className="card-body">
+          <div className="d-flex justify-content-between">
+            <div className="">
+              <h2 className="mb-4 text-primary">Elenco Animali Registrati</h2>
+              {userRole == "Veterinario" && (
+                <Link
+                  className="btn btn-outline-primary mb-4"
+                  to="/animali/nuovo"
+                >
+                  <i className="bi bi-plus-circle me-2"></i>Registra Animale
+                </Link>
+              )}
+            </div>
+
+            <img
+              src="../src/assets/img/pets.png"
+              alt="Pets image"
+              id="petsImg"
+              className="me-4"
+            />
+          </div>
 
           {animali.length === 0 ? (
             <div className="alert alert-info">Nessun animale registrato.</div>
           ) : (
             <div className="table-responsive">
-              <table className="table table-hover align-middle">
+              <table className="table table-hover align-middle table-striped">
                 <thead className="table-primary">
                   <tr>
                     <th>Nome</th>
@@ -63,7 +78,7 @@ const AnimaleList = () => {
                     <th>Colore</th>
                     <th>Data Nascita</th>
                     <th>Microchip</th>
-                    <th>Cod. Fiscale Proprietario</th>
+                    <th>Cod. Fiscale</th>
                     <th>Azioni</th>
                   </tr>
                 </thead>
@@ -81,26 +96,28 @@ const AnimaleList = () => {
                           <button
                             className="btn btn-sm btn-info"
                             title="Dettagli"
-                            onClick={() =>
-                              navigate(`/animali/dettaglio/${a.animaleId}`)
-                            }
+                            onClick={() => handleViewDetails(a.animaleId)}
                           >
                             <i className="bi bi-info-circle"></i>
                           </button>
-                          <button
-                            className="btn btn-sm btn-warning"
-                            title="Modifica"
-                            onClick={() => handleEditAnimale(a.animaleId)}
-                          >
-                            <i className="bi bi-pencil-square"></i>
-                          </button>
-                          <button
-                            className="btn btn-sm btn-danger"
-                            title="Elimina"
-                            onClick={() => handleDeleteAnimale(a.animaleId)}
-                          >
-                            <i className="bi bi-trash"></i>
-                          </button>
+                          {userRole == "Veterinario" && (
+                            <>
+                              <button
+                                className="btn btn-sm btn-warning"
+                                title="Modifica"
+                                onClick={() => handleEditAnimale(a.animaleId)}
+                              >
+                                <i className="bi bi-pencil-square"></i>
+                              </button>
+                              <button
+                                className="btn btn-sm btn-danger"
+                                title="Elimina"
+                                onClick={() => handleDeleteAnimale(a.animaleId)}
+                              >
+                                <i className="bi bi-trash"></i>
+                              </button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>

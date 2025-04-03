@@ -2,68 +2,100 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../Redux/authSlice";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errore, setErrore] = useState("");
-
+  const [form, setForm] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrore("");
 
     try {
-      const res = await fetch("http://localhost:7028/api/auth/login", {
+      const res = await fetch("https://localhost:7028/api/account/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
 
-      if (!res.ok) {
-        throw new Error("Credenziali errate o errore server");
-      }
+      if (!res.ok) throw new Error("Login fallito");
 
       const data = await res.json();
+      const token = data.token;
 
-      dispatch(loginSuccess({ token: data.token, user: data.user }));
-      navigate("/dashboard");
+      // 🔍 Decodifica il token per ottenere info utente
+      const decoded = jwtDecode(token);
+
+      const ruolo =
+        decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      const nome =
+        decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+      const email =
+        decoded[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+        ];
+
+      console.log("Ruolo:", ruolo);
+      console.log("Nome:", nome);
+
+      // ✅ Salvo token e info utente in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("ruolo", ruolo);
+      localStorage.setItem("nome", nome);
+      localStorage.setItem("email", email);
+
+      // ✅ Salvo anche in Redux
+      dispatch(
+        loginSuccess({
+          token,
+          user: {
+            ruolo,
+            nome,
+            email,
+          },
+        })
+      );
+
+      navigate("/");
     } catch (err) {
       console.error(err);
-      setErrore("Login fallito. Verifica le credenziali.");
+      alert("Credenziali non valide");
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+    <div className="myContainer p-4 w-50 m-auto">
+      <h3>Login</h3>
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label>Email</label>
+          <label>Email:</label>
           <input
-            className="form-control"
+            name="email"
             type="email"
+            className="form-control"
+            onChange={handleChange}
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-3">
-          <label>Password</label>
+          <label>Password:</label>
           <input
-            className="form-control"
+            name="password"
             type="password"
+            className="form-control"
+            onChange={handleChange}
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {errore && <div className="alert alert-danger">{errore}</div>}
-        <button className="btn btn-primary">Accedi</button>
+        <button className="btn btn-primary">
+          <i class="bi bi-box-arrow-in-right me-1"></i>Accedi
+        </button>
       </form>
     </div>
   );

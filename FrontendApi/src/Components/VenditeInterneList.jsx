@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
-const VenditaList = () => {
-  const [vendite, setVendite] = useState([]);
+const VenditeInterneList = () => {
+  const [venditeInterne, setVenditeInterne] = useState([]);
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
-    const fetchVendite = async () => {
+    const fetchVenditeInterne = async () => {
       try {
         const data = await fetchWithAuth(
           "https://localhost:7028/api/farmacia/vendita",
@@ -15,39 +15,39 @@ const VenditaList = () => {
           null,
           token
         );
-        setVendite(data);
+        setVenditeInterne(data);
       } catch (err) {
-        console.error("Errore nel recupero delle vendite:", err);
+        console.error("Errore nel recupero delle vendite interne:", err);
       }
     };
 
-    fetchVendite();
+    fetchVenditeInterne();
   }, [token]);
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Elenco Vendite</h3>
-      {vendite.length === 0 ? (
-        <p>Nessuna vendita registrata.</p>
+      <h3 className="mb-3">Vendite Interne</h3>
+      {venditeInterne.length === 0 ? (
+        <p>Nessuna vendita interna registrata.</p>
       ) : (
         <div className="table-responsive">
           <table className="table table-bordered">
             <thead className="table-light">
               <tr>
-                <th>Data Vendita</th>
+                <th>Data</th>
                 <th>Codice Fiscale Cliente</th>
-                <th>Prodotto</th>
                 <th>ID Animale</th>
+                <th>Prodotto</th>
                 <th>Ricetta</th>
               </tr>
             </thead>
             <tbody>
-              {vendite.map((v) => (
+              {venditeInterne.map((v) => (
                 <tr key={v.id}>
                   <td>{new Date(v.dataVendita).toLocaleDateString()}</td>
                   <td>{v.codiceFiscaleCliente}</td>
-                  <td>{v.prodotto?.nome || "-"}</td>
                   <td>{v.animaleId}</td>
+                  <td>{v.prodottoId}</td>
                   <td>{v.numeroRicetta || "-"}</td>
                 </tr>
               ))}
@@ -59,4 +59,4 @@ const VenditaList = () => {
   );
 };
 
-export default VenditaList;
+export default VenditeInterneList;

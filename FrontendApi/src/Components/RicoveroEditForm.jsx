@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const RicoveroEditForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [ricovero, setRicovero] = useState(null);
   const [errore, setErrore] = useState("");
+  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     const fetchRicovero = async () => {
       try {
-        const res = await fetch(`https://localhost:7028/api/ricovero/${id}`);
-        if (!res.ok) throw new Error("Errore nel recupero del ricovero");
-        const data = await res.json();
+        const data = await fetchWithAuth(
+          `https://localhost:7028/api/ricovero/${id}`,
+          "GET",
+          null,
+          token
+        );
         setRicovero(data);
       } catch (err) {
         setErrore(err.message);
@@ -20,34 +26,34 @@ const RicoveroEditForm = () => {
     };
 
     fetchRicovero();
-  }, [id]);
+  }, [id, token]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRicovero((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setRicovero((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`https://localhost:7028/api/ricovero/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(ricovero),
-      });
-
-      if (!res.ok) throw new Error("Errore durante l'aggiornamento");
-      alert("Ricovero aggiornato con successo!");
+      await fetchWithAuth(
+        `https://localhost:7028/api/ricovero/${id}`,
+        "PUT",
+        ricovero,
+        token
+      );
+      alert("✅ Ricovero aggiornato con successo!");
       navigate("/ricoveri");
     } catch (err) {
       console.error(err);
-      setErrore("Errore durante l'aggiornamento del ricovero");
+      setErrore("❌ Errore durante l'aggiornamento del ricovero.");
     }
   };
 
-  if (!ricovero) return <p>Caricamento...</p>;
+  if (!ricovero) return <p>Caricamento in corso...</p>;
 
   return (
     <div className="card p-4">
@@ -59,7 +65,7 @@ const RicoveroEditForm = () => {
             type="datetime-local"
             className="form-control"
             name="dataInizio"
-            value={ricovero.dataInizio?.slice(0, 16)} // ISO format
+            value={ricovero.dataInizio?.slice(0, 16)}
             onChange={handleChange}
             required
           />
@@ -71,7 +77,7 @@ const RicoveroEditForm = () => {
             type="datetime-local"
             className="form-control"
             name="dataFine"
-            value={ricovero.dataFine?.slice(0, 16)}
+            value={ricovero.dataFine?.slice(0, 16) || ""}
             onChange={handleChange}
           />
         </div>
@@ -148,22 +154,21 @@ const RicoveroEditForm = () => {
         </div>
 
         <div className="mb-3">
-          <label>Animale</label>
+          <label>ID Animale</label>
           <input
             type="text"
             className="form-control"
             name="animaleId"
             value={ricovero.animaleId}
             onChange={handleChange}
-            required
-            disabled // opzionale: rimuovi se vuoi modificarlo
+            disabled
           />
         </div>
 
         {errore && <div className="alert alert-danger">{errore}</div>}
 
         <button type="submit" className="btn btn-primary">
-          Salva modifiche
+          💾 Salva modifiche
         </button>
       </form>
     </div>

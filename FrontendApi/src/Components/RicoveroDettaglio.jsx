@@ -1,25 +1,31 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const RicoveroDettaglio = () => {
   const { id } = useParams();
   const [ricovero, setRicovero] = useState(null);
   const [errore, setErrore] = useState("");
+  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     const fetchRicovero = async () => {
       try {
-        const res = await fetch(`https://localhost:7028/api/ricovero/${id}`);
-        if (!res.ok) throw new Error("Errore nel recupero del ricovero");
-        const data = await res.json();
-        console.log(data);
+        const data = await fetchWithAuth(
+          `https://localhost:7028/api/ricovero/${id}`,
+          "GET",
+          null,
+          token
+        );
         setRicovero(data);
       } catch (err) {
-        setErrore(err.message);
+        setErrore(err.message || "Errore nel caricamento");
       }
     };
+
     fetchRicovero();
-  }, [id]);
+  }, [id, token]);
 
   if (errore) return <div className="alert alert-danger">{errore}</div>;
   if (!ricovero) return <p>Caricamento in corso...</p>;
@@ -36,12 +42,14 @@ const RicoveroDettaglio = () => {
         <dd className="col-sm-8">{ricovero.nomeAnimale}</dd>
 
         <dt className="col-sm-4">Data Inizio</dt>
-        <dd className="col-sm-8">{ricovero.dataInizio.toLocaleString()}</dd>
+        <dd className="col-sm-8">
+          {new Date(ricovero.dataInizio).toLocaleDateString()}
+        </dd>
 
         <dt className="col-sm-4">Data Fine</dt>
         <dd className="col-sm-8">
-          {ricovero.dataFine != null
-            ? ricovero.dataFine
+          {ricovero.dataFine
+            ? new Date(ricovero.dataFine).toLocaleDateString()
             : "Ricovero ancora attivo"}
         </dd>
 
@@ -68,8 +76,8 @@ const RicoveroDettaglio = () => {
         <dd className="col-sm-8">{ricovero.animaleId}</dd>
       </dl>
 
-      <Link className="btn btn-secondary" to="/ricoveri/">
-        Indietro
+      <Link className="btn btn-secondary" to="/ricoveri">
+        🔙 Indietro
       </Link>
     </div>
   );

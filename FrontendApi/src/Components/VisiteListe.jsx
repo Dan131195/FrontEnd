@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const VisiteList = () => {
   const [visite, setVisite] = useState([]);
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
+  const userRole = localStorage.getItem("ruolo");
 
   useEffect(() => {
     fetchVisite();
@@ -11,9 +15,12 @@ const VisiteList = () => {
 
   const fetchVisite = async () => {
     try {
-      const res = await fetch("https://localhost:7028/api/visite");
-      if (!res.ok) throw new Error("Errore nel recupero delle visite");
-      const data = await res.json();
+      const data = await fetchWithAuth(
+        "https://localhost:7028/api/visite",
+        "GET",
+        null,
+        token
+      );
       setVisite(data);
     } catch (err) {
       console.error("Errore nel recupero delle visite:", err);
@@ -24,11 +31,13 @@ const VisiteList = () => {
     if (!window.confirm("Sei sicuro di voler eliminare questa visita?")) return;
 
     try {
-      const res = await fetch(`https://localhost:7028/api/visite/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Errore nella cancellazione");
-      setVisite(visite.filter((v) => v.visitaId !== id));
+      await fetchWithAuth(
+        `https://localhost:7028/api/visite/${id}`,
+        "DELETE",
+        null,
+        token
+      );
+      setVisite((prev) => prev.filter((v) => v.visitaId !== id));
     } catch (err) {
       console.error("Errore durante la cancellazione:", err);
     }
@@ -39,54 +48,64 @@ const VisiteList = () => {
   };
 
   return (
-    <div className="myContainer p-2 border border-1 rounded-2">
-      <h3 className="mb-3">Elenco Visite Veterinarie</h3>
-      <Link className=" btn btn-primary mb-3" to="/visite">
-        Aggiungi una visita
-      </Link>
-      {visite.length === 0 ? (
-        <p>Nessuna visita registrata.</p>
-      ) : (
-        <div className="table-responsive">
-          <table className="table table-bordered">
-            <thead className="table-light">
-              <tr>
-                <th>Data</th>
-                <th>Esame Obiettivo</th>
-                <th>Cura Prescritta</th>
-                <th>ID Animale</th>
-                <th>Azioni</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visite.map((v) => (
-                <tr key={v.visitaId}>
-                  <td>{new Date(v.dataVisita).toLocaleDateString()}</td>
-                  <td>{v.esameObiettivo}</td>
-                  <td>{v.curaPrescritta}</td>
-                  <td>{v.animaleId}</td>
-                  <td>
-                    <div className="d-flex align-items-center justify-content-between">
-                      <button
-                        className="btn btn-warning btn-sm me-1"
-                        onClick={() => handleEditVisita(v.visitaId)}
-                      >
-                        <i class="bi bi-pencil-square"></i>
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleDeleteVisita(v.visitaId)}
-                      >
-                        <i className="bi bi-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="py-4">
+      <div className="myContainer shadow-sm border-0 p-3">
+        <div className="card-body ">
+          <h2 className="mb-4 text-primary">Elenco Visite Veterinarie</h2>
+
+          <Link className="btn btn-outline-primary mb-4" to="/visite">
+            <i className="bi bi-plus-circle me-2"></i>Aggiungi una visita
+          </Link>
+
+          {visite.length === 0 ? (
+            <div className="alert alert-info">Nessuna visita registrata.</div>
+          ) : (
+            <div className="table-responsive">
+              <table className="table table-hover align-middle table-striped">
+                <thead className="table-primary">
+                  <tr>
+                    <th>Data</th>
+                    <th>Esame Obiettivo</th>
+                    <th>Cura Prescritta</th>
+                    <th>ID Animale</th>
+                    {userRole === "Veterinario" && <th>Azioni</th>}
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {visite.map((v) => (
+                    <tr key={v.visitaId}>
+                      <td>{new Date(v.dataVisita).toLocaleDateString()}</td>
+                      <td>{v.esameObiettivo}</td>
+                      <td>{v.curaPrescritta}</td>
+                      <td>{v.animaleId}</td>
+                      {userRole == "Veterinario" && (
+                        <td>
+                          <div className="btn-group" role="group">
+                            <button
+                              className="btn btn-sm btn-warning"
+                              title="Modifica"
+                              onClick={() => handleEditVisita(v.visitaId)}
+                            >
+                              <i className="bi bi-pencil-square"></i>
+                            </button>
+                            <button
+                              className="btn btn-sm btn-danger"
+                              title="Elimina"
+                              onClick={() => handleDeleteVisita(v.visitaId)}
+                            >
+                              <i className="bi bi-trash"></i>
+                            </button>
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
