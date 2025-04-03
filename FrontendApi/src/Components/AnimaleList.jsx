@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const AnimaleList = () => {
   const [animali, setAnimali] = useState([]);
@@ -11,9 +12,7 @@ const AnimaleList = () => {
 
   const fetchAnimali = async () => {
     try {
-      const res = await fetch("https://localhost:7028/api/animale");
-      if (!res.ok) throw new Error("Errore nel recupero degli animali");
-      const data = await res.json();
+      const data = await fetchWithAuth("https://localhost:7028/api/animale");
       setAnimali(data);
     } catch (err) {
       console.error("Errore nel recupero degli animali:", err);
@@ -25,11 +24,7 @@ const AnimaleList = () => {
       return;
 
     try {
-      const res = await fetch(`https://localhost:7028/api/animale/${id}`, {
-        method: "DELETE",
-      });
-      console.log(id);
-      if (!res.ok) throw new Error("Errore nella cancellazione");
+      await fetchWithAuth(`https://localhost:7028/api/animale/${id}`, "DELETE");
       setAnimali(animali.filter((a) => a.id !== id));
       fetchAnimali();
     } catch (err) {
@@ -41,8 +36,12 @@ const AnimaleList = () => {
     navigate(`/animali/modifica/${id}`);
   };
 
+  const handleViewDetails = (id) => {
+    navigate(`/animali/dettaglio/${id}`);
+  };
+
   return (
-    <div className="container py-4 ">
+    <div className="container py-4">
       <div className="card shadow-sm border-0">
         <div className="card-body myContainer">
           <h2 className="mb-4 text-primary">Elenco Animali Registrati</h2>
@@ -81,23 +80,21 @@ const AnimaleList = () => {
                           <button
                             className="btn btn-sm btn-info"
                             title="Dettagli"
-                            onClick={() =>
-                              navigate(`/animali/dettaglio/${a.animaleId}`)
-                            }
+                            onClick={() => handleViewDetails(a.id)}
                           >
                             <i className="bi bi-info-circle"></i>
                           </button>
                           <button
                             className="btn btn-sm btn-warning"
                             title="Modifica"
-                            onClick={() => handleEditAnimale(a.animaleId)}
+                            onClick={() => handleEditAnimale(a.id)}
                           >
                             <i className="bi bi-pencil-square"></i>
                           </button>
                           <button
                             className="btn btn-sm btn-danger"
                             title="Elimina"
-                            onClick={() => handleDeleteAnimale(a.animaleId)}
+                            onClick={() => handleDeleteAnimale(a.id)}
                           >
                             <i className="bi bi-trash"></i>
                           </button>

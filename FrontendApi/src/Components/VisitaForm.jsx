@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const VisitaForm = () => {
   const [form, setForm] = useState({
@@ -8,6 +10,8 @@ const VisitaForm = () => {
     animaleId: "",
   });
 
+  const token = useSelector((state) => state.auth.token);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -16,17 +20,19 @@ const VisitaForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://localhost:7028/api/visite", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) throw new Error("Errore HTTP: " + res.status);
-
+      await fetchWithAuth(
+        "https://localhost:7028/api/visite",
+        "POST",
+        form,
+        token
+      );
       alert("Visita registrata con successo!");
+      setForm({
+        dataVisita: new Date().toISOString().slice(0, 10),
+        esameObiettivo: "",
+        curaPrescritta: "",
+        animaleId: "",
+      });
     } catch (error) {
       console.error(error);
       alert("Errore nella registrazione della visita.");

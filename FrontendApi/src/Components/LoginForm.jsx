@@ -4,65 +4,66 @@ import { loginSuccess } from "../Redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errore, setErrore] = useState("");
-
+  const [form, setForm] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrore("");
 
     try {
-      const res = await fetch("http://localhost:7028/api/auth/login", {
+      const res = await fetch("https://localhost:7028/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
 
-      if (!res.ok) {
-        throw new Error("Credenziali errate o errore server");
-      }
-
+      if (!res.ok) throw new Error("Login fallito");
       const data = await res.json();
 
-      dispatch(loginSuccess({ token: data.token, user: data.user }));
-      navigate("/dashboard");
+      // Salvo il token nel localStorage
+      localStorage.setItem("token", data.token);
+
+      // Lo salvo anche in Redux
+      dispatch(loginSuccess(data.token));
+
+      // Reindirizzo l'utente
+      navigate("/");
     } catch (err) {
       console.error(err);
-      setErrore("Login fallito. Verifica le credenziali.");
+      alert("Credenziali non valide");
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+    <div className="card p-4">
+      <h3>Login</h3>
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label>Email</label>
+          <label>Email:</label>
           <input
-            className="form-control"
+            name="email"
             type="email"
+            className="form-control"
+            onChange={handleChange}
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-3">
-          <label>Password</label>
+          <label>Password:</label>
           <input
-            className="form-control"
+            name="password"
             type="password"
+            className="form-control"
+            onChange={handleChange}
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {errore && <div className="alert alert-danger">{errore}</div>}
         <button className="btn btn-primary">Accedi</button>
       </form>
     </div>

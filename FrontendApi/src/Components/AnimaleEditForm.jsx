@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const AnimaleEditForm = () => {
   const { id } = useParams();
@@ -10,9 +11,9 @@ const AnimaleEditForm = () => {
   useEffect(() => {
     const fetchAnimale = async () => {
       try {
-        const res = await fetch(`https://localhost:7028/api/animale/${id}`);
-        if (!res.ok) throw new Error("Errore nel caricamento dell'animale");
-        const data = await res.json();
+        const data = await fetchWithAuth(
+          `https://localhost:7028/api/animale/${id}`
+        );
         setAnimale(data);
       } catch (err) {
         setErrore(err.message);
@@ -29,14 +30,13 @@ const AnimaleEditForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`https://localhost:7028/api/animale/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(animale),
-      });
+      await fetchWithAuth(
+        `https://localhost:7028/api/animale/${id}`,
+        "PUT",
+        animale
+      );
 
-      if (!res.ok) throw new Error("Errore durante il salvataggio");
-      navigate("/");
+      navigate("/animali/list"); // oppure navigate("/animali/list") se usi una route specifica
     } catch (err) {
       setErrore(err.message);
     }

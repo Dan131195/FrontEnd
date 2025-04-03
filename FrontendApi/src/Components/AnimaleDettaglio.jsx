@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const AnimaleDettaglio = () => {
   const { id } = useParams();
@@ -14,9 +15,9 @@ const AnimaleDettaglio = () => {
 
   const fetchAnimale = async () => {
     try {
-      const res = await fetch(`https://localhost:7028/api/animale/${id}`);
-      if (!res.ok) throw new Error("Errore nel caricamento dell'animale");
-      const data = await res.json();
+      const data = await fetchWithAuth(
+        `https://localhost:7028/api/animale/${id}`
+      );
       setAnimale(data);
     } catch (err) {
       setErrore(err.message);
@@ -25,12 +26,9 @@ const AnimaleDettaglio = () => {
 
   const fetchVisite = async () => {
     try {
-      const res = await fetch(
+      const data = await fetchWithAuth(
         `https://localhost:7028/api/visite/anamnesi/${id}`
       );
-      if (!res.ok) throw new Error("Errore nel caricamento delle visite");
-      const data = await res.json();
-      // Ordina le visite dalla più recente alla più vecchia
       const sorted = data.sort(
         (a, b) => new Date(b.dataVisita) - new Date(a.dataVisita)
       );

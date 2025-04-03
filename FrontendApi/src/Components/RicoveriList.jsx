@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
+import { useSelector } from "react-redux";
 
 const RicoveriList = () => {
   const [ricoveri, setRicoveri] = useState([]);
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     fetchRicoveri();
@@ -11,10 +14,12 @@ const RicoveriList = () => {
 
   const fetchRicoveri = async () => {
     try {
-      const res = await fetch("https://localhost:7028/api/ricovero/tutti");
-      if (!res.ok) throw new Error("Errore nel recupero dei ricoveri");
-      const data = await res.json();
-      console.log(data);
+      const data = await fetchWithAuth(
+        "https://localhost:7028/api/ricovero/tutti",
+        "GET",
+        null,
+        token
+      );
       setRicoveri(data);
     } catch (err) {
       console.error("Errore nel recupero dei ricoveri:", err);
@@ -22,62 +27,44 @@ const RicoveriList = () => {
   };
 
   const handleChiudiRicovero = async (id) => {
-    // Chiedi all'utente la data di fine, default = oggi
     const dataFine = prompt(
       "Inserisci la data di fine (YYYY-MM-DD):",
       new Date().toISOString().split("T")[0]
     );
-
-    if (!dataFine) return; // Se annulla, esci
+    if (!dataFine) return;
 
     try {
-      const res = await fetch(
+      await fetchWithAuth(
         `https://localhost:7028/api/ricovero/${id}/chiudi`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          // Converte in formato ISO e manda come stringa JSON pura
-          body: JSON.stringify(new Date(dataFine).toISOString()),
-        }
+        "PATCH",
+        { dataFine },
+        token
       );
-
-      if (!res.ok) throw new Error("Errore nella chiusura del ricovero");
-
       alert("✅ Ricovero chiuso con successo.");
-      fetchRicoveri(); // aggiorna la lista dopo la chiusura
+      fetchRicoveri();
     } catch (err) {
       console.error("Errore:", err);
       alert("❌ Impossibile chiudere il ricovero.");
     }
   };
 
-  const handleAddRicovero = () => {
-    navigate(`/ricovero/nuovo`);
-  };
-
-  const handleDettagliRicovero = (id) => {
-    navigate(`/ricovero/dettaglio/${id}`);
-  };
-
-  const handleEditRicovero = (id) => {
-    navigate(`/ricovero/modifica/${id}`);
-  };
+  const handleAddRicovero = () => navigate("/ricovero/nuovo");
+  const handleEditRicovero = (id) => navigate(`/ricovero/modifica/${id}`);
+  const handleDettagliRicovero = (id) => navigate(`/ricovero/dettaglio/${id}`);
 
   const handleDeleteRicovero = async (id) => {
     if (!window.confirm("Sei sicuro di voler eliminare questo ricovero?"))
       return;
-
     try {
-      const res = await fetch(`https://localhost:7028/api/ricovero/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Errore durante l'eliminazione");
-
-      setRicoveri((prev) => prev.filter((r) => r.id !== id));
+      await fetchWithAuth(
+        `https://localhost:7028/api/ricovero/${id}`,
+        "DELETE",
+        null,
+        token
+      );
+      setRicoveri((prev) => prev.filter((r) => r.ricoveroId !== id));
     } catch (err) {
-      console.error("Errore durante l'eliminazione del ricovero:", err);
+      console.error("Errore durante l'eliminazione:", err);
     }
   };
 
@@ -89,7 +76,7 @@ const RicoveriList = () => {
 
           <button
             className="btn btn-outline-primary mb-4"
-            onClick={() => handleAddRicovero()}
+            onClick={handleAddRicovero}
           >
             <i className="bi bi-plus-circle me-2"></i>Aggiungi Ricovero
           </button>
@@ -114,8 +101,8 @@ const RicoveriList = () => {
                 </thead>
                 <tbody className="table-group-divider">
                   {ricoveri.map((r) => (
-                    <tr key={r.id}>
-                      <td>{new Date(r.dataFine).toLocaleDateString()}</td>
+                    <tr key={r.ricoveroId}>
+                      <td>{new Date(r.dataInizio).toLocaleDateString()}</td>
                       <td>{r.descrizione}</td>
                       <td>{r.tipologia || "-"}</td>
                       <td>{r.coloreMantello || "-"}</td>
@@ -129,28 +116,25 @@ const RicoveriList = () => {
                             Chiudi Ricovero
                           </button>
                         ) : (
-                          r.dataFine
+                          new Date(r.dataFine).toLocaleDateString()
                         )}
                       </td>
                       <td>
-                        <div className="btn-group" role="group">
+                        <div className="btn-group btn-group-sm">
                           <button
-                            className="btn btn-sm btn-info"
-                            title="Dettagli"
+                            className="btn btn-info"
                             onClick={() => handleDettagliRicovero(r.ricoveroId)}
                           >
                             <i className="bi bi-info-circle"></i>
                           </button>
                           <button
-                            className="btn btn-sm btn-warning"
-                            title="Modifica"
+                            className="btn btn-warning"
                             onClick={() => handleEditRicovero(r.ricoveroId)}
                           >
                             <i className="bi bi-pencil-square"></i>
                           </button>
                           <button
-                            className="btn btn-sm btn-danger"
-                            title="Elimina"
+                            className="btn btn-danger"
                             onClick={() => handleDeleteRicovero(r.ricoveroId)}
                           >
                             <i className="bi bi-trash"></i>

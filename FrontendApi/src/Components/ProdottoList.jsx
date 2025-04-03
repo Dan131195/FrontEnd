@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const ProdottoList = () => {
   const [prodotti, setProdotti] = useState([]);
@@ -11,12 +12,12 @@ const ProdottoList = () => {
 
   const fetchProdotti = async () => {
     try {
-      const res = await fetch("https://localhost:7028/api/farmacia/prodotto");
-      if (!res.ok) throw new Error("Errore nel caricamento dei prodotti");
-      const data = await res.json();
-      setProdotti(data.data);
+      const data = await fetchWithAuth(
+        "https://localhost:7028/api/farmacia/prodotto"
+      );
+      setProdotti(data.data || data);
     } catch (err) {
-      console.error("Errore:", err);
+      console.error("Errore nel caricamento dei prodotti:", err);
     }
   };
 
@@ -25,30 +26,19 @@ const ProdottoList = () => {
       return;
 
     try {
-      const res = await fetch(
+      await fetchWithAuth(
         `https://localhost:7028/api/farmacia/prodotto/${id}`,
-        {
-          method: "DELETE",
-        }
+        "DELETE"
       );
-      if (!res.ok) throw new Error("Errore nella cancellazione");
       setProdotti((prev) => prev.filter((p) => p.prodottoId !== id));
     } catch (err) {
       console.error("Errore durante la cancellazione:", err);
     }
   };
 
-  const handleAddProdotto = () => {
-    navigate(`/prodotto/nuovo`);
-  };
-
-  const handleEditProdotto = (id) => {
-    navigate(`/prodotto/modifica/${id}`);
-  };
-
-  const handleDettaglioProdotto = (id) => {
-    navigate(`/prodotto/dettaglio/${id}`);
-  };
+  const handleAddProdotto = () => navigate(`/prodotto/nuovo`);
+  const handleEditProdotto = (id) => navigate(`/prodotto/modifica/${id}`);
+  const handleDettaglioProdotto = (id) => navigate(`/prodotto/dettaglio/${id}`);
 
   return (
     <div className="card p-4">
@@ -56,7 +46,7 @@ const ProdottoList = () => {
 
       <button
         className="btn btn-warning btn-sm me-2"
-        onClick={() => handleAddProdotto()}
+        onClick={handleAddProdotto}
       >
         Aggiungi un prodotto
       </button>
@@ -68,20 +58,15 @@ const ProdottoList = () => {
           {prodotti.map((p) => (
             <div key={p.prodottoId} className="col-md-6 col-lg-3 mb-4">
               <div className="card h-100 shadow-sm">
-                {p.tipo === "Medicinale" ? (
-                  <img
-                    src="https://www.shutterstock.com/image-vector/veterinary-icon-little-paw-cross-600nw-2428377771.jpg"
-                    class="card-img-top"
-                    alt="Logo Medicinale"
-                  />
-                ) : (
-                  <img
-                    src="https://static.vecteezy.com/ti/vettori-gratis/t1/50730314-verde-veterinario-dieta-etichetta-icona-animale-domestico-ciotola-e-dieta-cibo-gatto-cibo-proprieta-cibo-confezione-etichetta-vettoriale.jpg"
-                    class="card-img-top"
-                    alt="Logo Alimento"
-                    className="p-4"
-                  />
-                )}
+                <img
+                  src={
+                    p.tipo === "Medicinale"
+                      ? "https://www.shutterstock.com/image-vector/veterinary-icon-little-paw-cross-600nw-2428377771.jpg"
+                      : "https://static.vecteezy.com/ti/vettori-gratis/t1/50730314-verde-veterinario-dieta-etichetta-icona-animale-domestico-ciotola-e-dieta-cibo-gatto-cibo-proprieta-cibo-confezione-etichetta-vettoriale.jpg"
+                  }
+                  className="card-img-top p-3"
+                  alt={`Logo ${p.tipo}`}
+                />
                 <div className="card-body">
                   <h5 className="card-title">{p.nome}</h5>
                   <p className="mb-1">
