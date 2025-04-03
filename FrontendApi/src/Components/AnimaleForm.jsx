@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { fetchWithAuth } from "../uUils/fetchWithAuth";
 
 const AnimaleForm = () => {
   const [form, setForm] = useState({
@@ -26,16 +27,7 @@ const AnimaleForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://localhost:7028/api/animale", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) throw new Error("Errore HTTP: " + res.status);
-
+      await fetchWithAuth("https://localhost:7028/api/animale", "POST", form);
       alert("Animale registrato con successo!");
     } catch (error) {
       console.error(error);

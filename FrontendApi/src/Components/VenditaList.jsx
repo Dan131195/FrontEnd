@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const VenditaList = () => {
   const [vendite, setVendite] = useState([]);
+  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     const fetchVendite = async () => {
       try {
-        const res = await fetch("https://localhost:7028/api/farmacia/vendita");
-        if (!res.ok) throw new Error("Errore nel recupero delle vendite");
-        const data = await res.json();
+        const data = await fetchWithAuth(
+          "https://localhost:7028/api/farmacia/vendita",
+          "GET",
+          null,
+          token
+        );
         setVendite(data);
       } catch (err) {
         console.error("Errore nel recupero delle vendite:", err);
@@ -16,7 +22,7 @@ const VenditaList = () => {
     };
 
     fetchVendite();
-  }, []);
+  }, [token]);
 
   return (
     <div className="card p-4">

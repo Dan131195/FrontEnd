@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const VenditaForm = () => {
   const [form, setForm] = useState({
@@ -9,6 +11,8 @@ const VenditaForm = () => {
     dataVendita: new Date().toISOString().slice(0, 10),
   });
 
+  const token = useSelector((state) => state.auth.token);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -17,17 +21,21 @@ const VenditaForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://localhost:7028/api/farmacia/vendita", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) throw new Error("Errore HTTP: " + res.status);
+      await fetchWithAuth(
+        "https://localhost:7028/api/farmacia/vendita",
+        "POST",
+        form,
+        token
+      );
 
       alert("Vendita registrata con successo!");
+      setForm({
+        animaleId: "",
+        codiceFiscaleCliente: "",
+        prodottoId: "",
+        numeroRicetta: "",
+        dataVendita: new Date().toISOString().slice(0, 10),
+      });
     } catch (error) {
       console.error(error);
       alert("Errore durante la registrazione della vendita.");

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const ProdottoForm = () => {
   const [form, setForm] = useState({
@@ -19,15 +20,12 @@ const ProdottoForm = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("https://localhost:7028/api/farmacia/prodotto", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+      await fetchWithAuth(
+        "https://localhost:7028/api/farmacia/prodotto",
+        "POST",
+        form
+      );
 
-      if (!res.ok) throw new Error("Errore durante la creazione del prodotto");
       alert("Prodotto creato con successo!");
       setForm({
         nome: "",

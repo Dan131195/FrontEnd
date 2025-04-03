@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
 const ProdottoDettaglio = () => {
   const { id } = useParams();
@@ -10,11 +11,9 @@ const ProdottoDettaglio = () => {
   useEffect(() => {
     const fetchProdotto = async () => {
       try {
-        const res = await fetch(
+        const data = await fetchWithAuth(
           `https://localhost:7028/api/farmacia/prodotto/${id}`
         );
-        if (!res.ok) throw new Error("Errore nel recupero del prodotto");
-        const data = await res.json();
         setProdotto(data);
       } catch (err) {
         setErrore(err.message);
