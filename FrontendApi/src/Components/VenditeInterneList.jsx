@@ -11,13 +11,45 @@ const VenditeInterneList = () => {
   useEffect(() => {
     const fetchVenditeInterne = async () => {
       try {
-        const data = await fetchWithAuth(
+        const vendite = await fetchWithAuth(
           "https://localhost:7028/api/farmacia/vendita",
           "GET",
           null,
           token
         );
-        setVenditeInterne(data);
+
+        const venditeConDettagli = await Promise.all(
+          vendite.map(async (v) => {
+            let animale = null;
+            let prodotto = null;
+
+            try {
+              animale = await fetchWithAuth(
+                `https://localhost:7028/api/Animale/${v.animaleId}`,
+                "GET",
+                null,
+                token
+              );
+              prodotto = await fetchWithAuth(
+                `https://localhost:7028/api/farmacia/Prodotto/${v.prodottoId}`,
+                "GET",
+                null,
+                token
+              );
+            } catch (err) {
+              console.warn("Errore nel recupero dati animale/prodotto", err);
+            }
+
+            return {
+              ...v,
+              nomeAnimale: animale?.nomeAnimale || "N/A",
+              specie: animale?.tipologia || "-",
+              nomeProdotto: prodotto?.nome || "N/A",
+            };
+          })
+        );
+
+        setVenditeInterne(venditeConDettagli);
       } catch (err) {
         console.error("Errore nel recupero delle vendite interne:", err);
       }
@@ -30,19 +62,31 @@ const VenditeInterneList = () => {
     navigate(`/vendita/modifica/${id}`);
   };
 
+  const handleRicercaVendita = () => {
+    navigate(`/vendita/ricerca`);
+  };
+
   return (
-    <div className="card p-4">
+    <div className="myContainer p-4">
       <h3 className="mb-3">Vendite Interne</h3>
+      <button
+        className="btn btn-sm btn-primary"
+        title="Modifica"
+        onClick={() => handleRicercaVendita()}
+      >
+        <i className="bi bi-search me-1"></i>Ricerca Vendita
+      </button>
       {venditeInterne.length === 0 ? (
         <p>Nessuna vendita interna registrata.</p>
       ) : (
-        <div className="table-responsive">
+        <div className="table-responsive my-2">
           <table className="table table-bordered">
             <thead className="table-light">
               <tr>
                 <th>Data</th>
                 <th>Codice Fiscale Cliente</th>
-                <th>ID Animale</th>
+                <th>Animale</th>
+                <th>Specie</th>
                 <th>Prodotto</th>
                 <th>Ricetta</th>
                 <th></th>
@@ -53,8 +97,9 @@ const VenditeInterneList = () => {
                 <tr key={v.id}>
                   <td>{new Date(v.dataVendita).toLocaleDateString()}</td>
                   <td>{v.codiceFiscaleCliente}</td>
-                  <td>{v.animaleId}</td>
-                  <td>{v.prodottoId}</td>
+                  <td>{v.nomeAnimale}</td>
+                  <td>{v.specie}</td>
+                  <td>{v.nomeProdotto}</td>
                   <td>{v.numeroRicetta || "-"}</td>
                   <td>
                     <button

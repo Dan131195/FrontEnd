@@ -6,7 +6,7 @@ body {
   background-repeat: no-repeat;
 }
 .mainContainer {
-  width: 90%;
+  width: 85%;
   margin: auto;
 }
 .myContainer {
@@ -64,7 +64,15 @@ footer {
 .petLogoList {
   width: 50px;
 }
+h1,
 h3,
 h2 {
   color: #27b9b6 !important;
+}
+#medRecord {
+  width: 100px;
+}
+#homeImg {
+  width: 60%;
+  margin: 10px auto;
 }

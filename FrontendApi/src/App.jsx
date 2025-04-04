@@ -27,6 +27,7 @@ import RicercaMicrochip from "./Components/RicercaMicrochip.jsx";
 import FooterComponent from "./Components/FooterComponent.jsx";
 import VisitaEditForm from "./Components/VisitaEditForm.jsx";
 import VenditaEditForm from "./Components/VenditaEditForm.jsx";
+import VenditeRicerca from "./Components/VenditeRicerca.jsx";
 
 const App = () => {
   return (
@@ -87,6 +88,7 @@ const App = () => {
               element={<VenditaInternaForm />}
             />
             <Route path="/vendita/modifica/:id" element={<VenditaEditForm />} />
+            <Route path="/vendita/ricerca" element={<VenditeRicerca />} />
           </Routes>
         </main>
 

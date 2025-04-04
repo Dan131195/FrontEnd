@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import homeImg from "../assets/img/home.jpg";
 
 const HomePage = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -15,7 +16,7 @@ const HomePage = () => {
         backgroundImage: "url('/img/silhouette-bg.png')",
         backgroundSize: "cover",
         backgroundPosition: "bottom center",
-        padding: "2rem",
+        padding: "3rem",
       }}
     >
       <div
@@ -23,10 +24,9 @@ const HomePage = () => {
         style={{ maxWidth: "800px", zIndex: 2 }}
       >
         {!isAuthenticated ? (
-          <>
-            <h1 className="mb-3 text-primary">
-              Un team di veterinari per i tuoi animali
-            </h1>
+          <div className="px-4">
+            <img src={homeImg} alt="" id="homeImg" />
+            <h1 className="mb-3">Un team di veterinari per i tuoi animali</h1>
             <p className="lead">
               Alla <strong>Clinica Veterinaria</strong> ci occupiamo da anni
               della cura degli{" "}
@@ -38,16 +38,17 @@ const HomePage = () => {
             <button className="btn btn-info text-white fw-bold mt-3">
               VISITE PER ANIMALI
             </button>
-          </>
+          </div>
         ) : (
-          <>
-            <h1 className="mb-3 text-primary">Clinica Veterinaria</h1>
+          <div>
+            <img src={homeImg} alt="" id="homeImg" />
+            <h1 className="mb-3 ">Clinica Veterinaria</h1>
             <p className="lead">
               Benvenuto/a nella nostra clinica {nome}! Qui puoi registrare gli
               animali, gestire le visite, i ricoveri e accedere alla farmacia
               interna in modo semplice e veloce.
             </p>
-          </>
+          </div>
         )}
       </div>
 
