@@ -5,6 +5,8 @@ import { fetchWithAuth } from "../Utils/fetchWithAuth";
 import dogImg from "../assets/img/dog.png";
 import catImg from "../assets/img/cat.png";
 import parotImg from "../assets/img/parot.png";
+import snakeImg from "../assets/img/snake.png";
+import pawImg from "../assets/img/paw.png";
 
 const AnimaleDettaglio = () => {
   const { id } = useParams();
@@ -50,8 +52,10 @@ const AnimaleDettaglio = () => {
         return catImg;
       case "Pappagallo":
         return parotImg;
+      case "Serpente":
+        return snakeImg;
       default:
-        return null;
+        return pawImg;
     }
   };
 
