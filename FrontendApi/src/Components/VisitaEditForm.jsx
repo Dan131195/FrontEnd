@@ -14,6 +14,7 @@ const VisitaEditForm = () => {
     curaPrescritta: "",
     animaleId: "",
   });
+  const [animali, setAnimali] = useState([]);
 
   useEffect(() => {
     const fetchVisita = async () => {
@@ -35,6 +36,16 @@ const VisitaEditForm = () => {
       }
     };
 
+    const fetchAnimali = async () => {
+      try {
+        const data = await fetchWithAuth("https://localhost:7028/api/animale");
+        setAnimali(data);
+      } catch (err) {
+        console.error("Errore nel caricamento animali:", err);
+      }
+    };
+
+    fetchAnimali();
     fetchVisita();
   }, [id, token]);
 
@@ -101,14 +112,20 @@ const VisitaEditForm = () => {
 
         <div className="mb-3">
           <label className="form-label">ID Animale</label>
-          <input
-            type="text"
-            className="form-control"
+          <select
+            className="form-select"
             name="animaleId"
             value={form.animaleId}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">-- Seleziona un ID animale --</option>
+            {animali.map((a) => (
+              <option key={a.animaleId} value={a.animaleId}>
+                {a.nomeAnimale} ({a.animaleId})
+              </option>
+            ))}
+          </select>
         </div>
 
         <button type="submit" className="btn btn-primary">
