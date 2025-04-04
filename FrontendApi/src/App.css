@@ -65,7 +65,7 @@ footer {
   width: 50px;
 }
 h1,
-h3,
+h2,
 h2 {
   color: #27b9b6 !important;
 }
@@ -75,4 +75,13 @@ h2 {
 #homeImg {
   width: 60%;
   margin: 10px auto;
+}
+#recoveryImg {
+  width: 15%;
+}
+.btn-outline-primary {
+  border-width: 2px !important;
+}
+#pharmacyImg {
+  width: 13%;
 }

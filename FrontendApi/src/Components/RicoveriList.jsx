@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
 import { useSelector } from "react-redux";
+import recoveryImg from "../assets/img/recovering.png";
 
 const RicoveriList = () => {
   const [ricoveri, setRicoveri] = useState([]);
@@ -74,15 +75,25 @@ const RicoveriList = () => {
     <div className="py-4">
       <div className=" myContainer shadow-sm border-0 p-3 my-4">
         <div className="card-body">
-          <h2 className="mb-4">Ricoveri</h2>
-          {userRole === "Veterinario" && (
-            <button
-              className="btn btn-outline-primary mb-4"
-              onClick={handleAddRicovero}
-            >
-              <i className="bi bi-plus-circle me-2"></i>Aggiungi Ricovero
-            </button>
-          )}
+          <div className="d-flex justify-content-between">
+            <div>
+              <h2 className="mb-4">Ricoveri</h2>
+              {userRole === "Veterinario" && (
+                <button
+                  className="btn btn-outline-primary mb-4"
+                  onClick={handleAddRicovero}
+                >
+                  <i className="bi bi-plus-circle me-2"></i>Aggiungi Ricovero
+                </button>
+              )}
+            </div>
+            <img
+              src={recoveryImg}
+              alt="Recovery Image"
+              id="recoveryImg"
+              className="me-3"
+            />
+          </div>
 
           {ricoveri.length === 0 ? (
             <div className="alert alert-info">

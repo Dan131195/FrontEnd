@@ -64,7 +64,7 @@ const VenditaEditForm = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Modifica Vendita Farmacia</h3>
+      <h2 className="mb-3">Modifica Vendita Farmacia</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">ID Animale</label>

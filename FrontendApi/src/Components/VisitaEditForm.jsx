@@ -15,6 +15,8 @@ const VisitaEditForm = () => {
     animaleId: "",
   });
 
+  const [animali, setAnimali] = useState([]);
+
   useEffect(() => {
     const fetchVisita = async () => {
       try {
@@ -35,7 +37,22 @@ const VisitaEditForm = () => {
       }
     };
 
+    const fetchAnimali = async () => {
+      try {
+        const data = await fetchWithAuth(
+          "https://localhost:7028/api/animale",
+          "GET",
+          null,
+          token
+        );
+        setAnimali(data);
+      } catch (err) {
+        console.error("Errore nel recupero degli animali:", err);
+      }
+    };
+
     fetchVisita();
+    fetchAnimali();
   }, [id, token]);
 
   const handleChange = (e) => {
@@ -63,7 +80,7 @@ const VisitaEditForm = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Modifica Visita</h3>
+      <h2 className="mb-3">Modifica Visita</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Data Visita</label>
@@ -100,15 +117,21 @@ const VisitaEditForm = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">ID Animale</label>
-          <input
-            type="text"
-            className="form-control"
+          <label className="form-label">Animale</label>
+          <select
+            className="form-select"
             name="animaleId"
             value={form.animaleId}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Seleziona un animale...</option>
+            {animali.map((a) => (
+              <option key={a.animaleId} value={a.animaleId}>
+                {a.nomeAnimale} ({a.tipologia})
+              </option>
+            ))}
+          </select>
         </div>
 
         <button type="submit" className="btn btn-primary">

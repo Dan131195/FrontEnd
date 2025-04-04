@@ -73,7 +73,7 @@ const VenditaInternaForm = ({ prodottoId, onClose }) => {
 
   return (
     <div className="p-4 mt-4">
-      <h3 className="mb-3">Vendita Interna</h3>
+      <h2 className="mb-3">Vendita Interna</h2>
       <form onSubmit={handleSubmit}>
         {/* 🔽 Select Animale */}
         <div className="mb-3">

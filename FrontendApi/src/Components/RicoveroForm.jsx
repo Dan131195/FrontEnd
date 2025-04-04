@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
@@ -9,7 +9,26 @@ const RicoveroForm = () => {
     animaleId: "",
   });
 
+  const [animali, setAnimali] = useState([]);
   const token = useSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    const fetchAnimali = async () => {
+      try {
+        const data = await fetchWithAuth(
+          "https://localhost:7028/api/animale",
+          "GET",
+          null,
+          token
+        );
+        setAnimali(data);
+      } catch (err) {
+        console.error("Errore nel recupero degli animali:", err);
+      }
+    };
+
+    fetchAnimali();
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +60,7 @@ const RicoveroForm = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Registra un Ricovero</h3>
+      <h2 className="mb-3">Registra un Ricovero</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label>Data Inizio</label>
@@ -65,15 +84,21 @@ const RicoveroForm = () => {
           />
         </div>
         <div className="mb-3">
-          <label>ID Animale</label>
-          <input
-            type="text"
-            className="form-control"
+          <label>Animale</label>
+          <select
+            className="form-select"
             name="animaleId"
             value={form.animaleId}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Seleziona un animale...</option>
+            {animali.map((a) => (
+              <option key={a.animaleId} value={a.animaleId}>
+                {a.nomeAnimale} ({a.tipologia})
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit" className="btn btn-primary">
           Salva Ricovero

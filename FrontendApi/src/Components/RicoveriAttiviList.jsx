@@ -44,7 +44,7 @@ const RicoveriAttiviList = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Ricoveri Attivi</h3>
+      <h2 className="mb-3">Ricoveri Attivi</h2>
       {ricoveri.length === 0 ? (
         <p>Nessun ricovero attivo.</p>
       ) : (

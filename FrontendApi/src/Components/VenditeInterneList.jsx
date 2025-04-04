@@ -68,7 +68,7 @@ const VenditeInterneList = () => {
 
   return (
     <div className="myContainer p-4">
-      <h3 className="mb-3">Vendite Interne</h3>
+      <h2 className="mb-3">Vendite Interne</h2>
       <button
         className="btn btn-sm btn-primary"
         title="Modifica"

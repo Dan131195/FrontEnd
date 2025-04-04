@@ -128,7 +128,7 @@ const VenditeRicerca = () => {
 
   return (
     <div className="myContainer p-4">
-      <h3 className="mb-3">🔍 Ricerca Vendite</h3>
+      <h2 className="mb-3">🔍 Ricerca Vendite</h2>
 
       {/* Dropdown per codice fiscale */}
       <div className="mb-3">

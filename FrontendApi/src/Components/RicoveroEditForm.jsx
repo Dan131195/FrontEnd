@@ -57,7 +57,7 @@ const RicoveroEditForm = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Modifica Ricovero</h3>
+      <h2 className="mb-3">Modifica Ricovero</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label>Data Inizio</label>
