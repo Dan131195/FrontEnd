@@ -50,7 +50,7 @@ const NavbarComponent = () => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link text-white mx-3" to="/visite">
+                    <Link className="nav-link text-white mx-md-3" to="/visite">
                       <i className="bi bi-clipboard2-pulse me-1"></i>Visite
                     </Link>
                   </li>
@@ -87,7 +87,7 @@ const NavbarComponent = () => {
                   </>
                 ) : (
                   <>
-                    <li className="nav-item me-3">
+                    <li className="nav-item me-md-3">
                       <Link className="nav-link text-white" to="/prodotti">
                         <i class="bi bi-capsule-pill me-1"></i>Farmacia
                       </Link>

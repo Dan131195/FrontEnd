@@ -47,11 +47,12 @@ const RicoveriList = () => {
       fetchRicoveri();
     } catch (err) {
       console.error("Errore:", err);
-      alert("❌ Impossibile chiudere il ricovero.");
+      -alert("❌ Impossibile chiudere il ricovero.");
     }
   };
 
   const handleAddRicovero = () => navigate("/ricovero/nuovo");
+  const handleRicoveroAttivo = () => navigate("/ricoveri/attivi");
   const handleEditRicovero = (id) => navigate(`/ricovero/modifica/${id}`);
   const handleDettagliRicovero = (id) => navigate(`/ricovero/dettaglio/${id}`);
 
@@ -79,12 +80,20 @@ const RicoveriList = () => {
             <div>
               <h2 className="mb-4">Ricoveri</h2>
               {userRole === "Veterinario" && (
-                <button
-                  className="btn btn-outline-primary mb-4"
-                  onClick={handleAddRicovero}
-                >
-                  <i className="bi bi-plus-circle me-2"></i>Aggiungi Ricovero
-                </button>
+                <>
+                  <button
+                    className="btn btn-outline-primary mb-4"
+                    onClick={handleAddRicovero}
+                  >
+                    <i className="bi bi-plus-circle me-2"></i>Aggiungi Ricovero
+                  </button>
+                  <button
+                    className="btn btn-outline-success mb-4 ms-2"
+                    onClick={handleRicoveroAttivo}
+                  >
+                    <i class="bi bi-clipboard2-pulse me-2"></i>Ricoveri attivi
+                  </button>
+                </>
               )}
             </div>
             <img
