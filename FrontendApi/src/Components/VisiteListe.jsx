@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
+import medRecord from "../assets/img/recordd.jpg";
 
 const VisiteList = () => {
   const [visite, setVisite] = useState([]);
@@ -51,16 +53,26 @@ const VisiteList = () => {
     <div className="py-4">
       <div className="myContainer shadow-sm border-0 p-3">
         <div className="card-body ">
-          <h2 className="mb-4">Elenco Visite Veterinarie</h2>
+          <div className="d-flex justify-content-between">
+            <div>
+              <h2 className="mb-4">Elenco Visite Veterinarie</h2>
 
-          <Link className="btn btn-outline-primary mb-4" to="/visite">
-            <i className="bi bi-plus-circle me-2"></i>Aggiungi una visita
-          </Link>
+              <Link className="btn btn-outline-primary mb-4" to="/visite">
+                <i className="bi bi-plus-circle me-2"></i>Aggiungi una visita
+              </Link>
+            </div>
+            <img
+              src={medRecord}
+              alt="Medical record"
+              id="medRecord"
+              className="me-5"
+            />
+          </div>
 
           {visite.length === 0 ? (
             <div className="alert alert-info">Nessuna visita registrata.</div>
           ) : (
-            <div className="table-responsive">
+            <div className="table-responsive my-2">
               <table className="table table-hover align-middle table-striped">
                 <thead className="table-primary">
                   <tr>

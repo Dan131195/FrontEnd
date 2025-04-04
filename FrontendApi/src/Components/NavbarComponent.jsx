@@ -37,7 +37,7 @@ const NavbarComponent = () => {
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
           >
-            <i class="bi bi-list"></i>
+            <i className="bi bi-list"></i>
           </button>
 
           <div className="collapse navbar-collapse" id="navbarNav">
