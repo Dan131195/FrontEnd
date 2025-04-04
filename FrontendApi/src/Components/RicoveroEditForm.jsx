@@ -6,34 +6,73 @@ import { fetchWithAuth } from "../Utils/fetchWithAuth";
 const RicoveroEditForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [ricovero, setRicovero] = useState(null);
-  const [errore, setErrore] = useState("");
   const token = useSelector((state) => state.auth.token);
 
+  const [ricovero, setRicovero] = useState(null);
+  const [errore, setErrore] = useState("");
+  const [animali, setAnimali] = useState([]);
+
   useEffect(() => {
-    const fetchRicovero = async () => {
+    const fetchAll = async () => {
       try {
-        const data = await fetchWithAuth(
-          `https://localhost:7028/api/ricovero/${id}`,
-          "GET",
-          null,
-          token
-        );
-        setRicovero(data);
+        const [ricoveroData, animaliData] = await Promise.all([
+          fetchWithAuth(
+            `https://localhost:7028/api/ricovero/${id}`,
+            "GET",
+            null,
+            token
+          ),
+          fetchWithAuth(
+            `https://localhost:7028/api/animale`,
+            "GET",
+            null,
+            token
+          ),
+        ]);
+        setRicovero(ricoveroData);
+        setAnimali(animaliData);
       } catch (err) {
-        setErrore(err.message);
+        console.log(err);
+        setErrore("Errore nel caricamento dei dati.");
       }
     };
 
-    fetchRicovero();
+    fetchAll();
   }, [id, token]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setRicovero((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+    if (name === "animaleId") {
+      if (value === "") {
+        // Inserimento manuale
+        setRicovero((prev) => ({
+          ...prev,
+          animaleId: "",
+          tipologia: "",
+          coloreMantello: "",
+          microchipPresente: false,
+          numeroMicrochip: "",
+        }));
+      } else {
+        const selected = animali.find((a) => a.animaleId === value);
+        if (selected) {
+          setRicovero((prev) => ({
+            ...prev,
+            animaleId: selected.animaleId,
+            tipologia: selected.tipologia,
+            coloreMantello: selected.coloreMantello,
+            microchipPresente: selected.microchipPresente,
+            numeroMicrochip: selected.numeroMicrochip,
+          }));
+        }
+      }
+    } else {
+      setRicovero((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -54,6 +93,8 @@ const RicoveroEditForm = () => {
   };
 
   if (!ricovero) return <p>Caricamento in corso...</p>;
+
+  const isManual = ricovero.animaleId === "";
 
   return (
     <div className="card p-4">
@@ -83,6 +124,23 @@ const RicoveroEditForm = () => {
         </div>
 
         <div className="mb-3">
+          <label>Animale registrato</label>
+          <select
+            className="form-select"
+            name="animaleId"
+            value={ricovero.animaleId || ""}
+            onChange={handleChange}
+          >
+            <option value="">-- Inserimento manuale --</option>
+            {animali.map((a) => (
+              <option key={a.animaleId} value={a.animaleId}>
+                {a.nomeAnimale} ({a.tipologia})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-3">
           <label>Tipologia</label>
           <input
             type="text"
@@ -91,6 +149,7 @@ const RicoveroEditForm = () => {
             value={ricovero.tipologia}
             onChange={handleChange}
             required
+            readOnly={!isManual}
           />
         </div>
 
@@ -103,6 +162,7 @@ const RicoveroEditForm = () => {
             value={ricovero.coloreMantello}
             onChange={handleChange}
             required
+            readOnly={!isManual}
           />
         </div>
 
@@ -114,14 +174,15 @@ const RicoveroEditForm = () => {
             name="microchipPresente"
             checked={ricovero.microchipPresente}
             onChange={(e) =>
-              setRicovero({
-                ...ricovero,
-                microchipPresente: e.target.checked,
-                numeroMicrochip: e.target.checked
-                  ? ricovero.numeroMicrochip
-                  : "",
+              handleChange({
+                target: {
+                  name: "microchipPresente",
+                  type: "checkbox",
+                  checked: e.target.checked,
+                },
               })
             }
+            disabled={!isManual}
           />
           <label className="form-check-label" htmlFor="microchipPresente">
             Microchip Presente
@@ -135,9 +196,10 @@ const RicoveroEditForm = () => {
               type="text"
               className="form-control"
               name="numeroMicrochip"
-              value={ricovero.numeroMicrochip}
+              value={ricovero.numeroMicrochip || ""}
               onChange={handleChange}
               required
+              readOnly={!isManual}
             />
           </div>
         )}
@@ -153,22 +215,17 @@ const RicoveroEditForm = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <label>ID Animale</label>
-          <input
-            type="text"
-            className="form-control"
-            name="animaleId"
-            value={ricovero.animaleId}
-            onChange={handleChange}
-            disabled
-          />
-        </div>
-
         {errore && <div className="alert alert-danger">{errore}</div>}
 
-        <button type="submit" className="btn btn-primary">
-          💾 Salva modifiche
+        <button type="submit" className="btn btn-success">
+          <i class="bi bi-floppy me-1"></i> Salva modifiche
+        </button>
+        <button
+          type="submit"
+          className="btn btn-dark"
+          onClick={navigate("/ricoveri")}
+        >
+          <i class="bi bi-arrow-left-circle me-1"></i> Indietro
         </button>
       </form>
     </div>

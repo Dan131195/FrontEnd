@@ -153,7 +153,7 @@ const RicoveroForm = () => {
             value={form.tipologia}
             onChange={handleChange}
             required
-            readOnly={!isManual}
+            disabled={!isManual}
           />
         </div>
 
@@ -166,7 +166,7 @@ const RicoveroForm = () => {
             value={form.coloreMantello}
             onChange={handleChange}
             required
-            readOnly={!isManual}
+            disabled={!isManual}
           />
         </div>
 
@@ -190,12 +190,19 @@ const RicoveroForm = () => {
             name="numeroMicrochip"
             value={form.numeroMicrochip || ""}
             onChange={handleChange}
-            readOnly={!isManual}
+            disabled={!isManual}
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Salva Ricovero
+        <button type="submit" className="btn btn-success">
+          <i class="bi bi-floppy me-1"></i>Salva Ricovero
+        </button>
+        <button
+          type="submit"
+          className="btn btn-dark"
+          onClick={() => navigate("/ricoveri")}
+        >
+          <i class="bi bi-arrow-left-circle me-1"></i> Indietro
         </button>
       </form>
     </div>

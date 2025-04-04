@@ -129,7 +129,7 @@ const AnimaleEditForm = () => {
         </div>
 
         {errore && <div className="alert alert-danger">{errore}</div>}
-        <button className="btn btn-primary">
+        <button className="btn btn-success">
           <i className="bi bi-floppy p-1 me-1 text-white"></i>Salva modifiche
         </button>
         <Link className="btn btn-secondary ms-3" to="/animali/list">
