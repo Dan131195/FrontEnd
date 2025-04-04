@@ -57,7 +57,7 @@ const VisiteList = () => {
             <div>
               <h2 className="mb-4">Elenco Visite Veterinarie</h2>
 
-              <Link className="btn btn-outline-primary mb-4" to="/visite">
+              <Link className="btn btn-outline-primary mb-4" to="/visite/nuova">
                 <i className="bi bi-plus-circle me-2"></i>Aggiungi una visita
               </Link>
             </div>

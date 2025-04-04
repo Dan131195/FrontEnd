@@ -17,7 +17,7 @@ const AnimaleForm = () => {
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, checked } = e.target;
 
     if (name === "microchipPresente") {
       setForm((prev) => ({
@@ -156,6 +156,8 @@ const AnimaleForm = () => {
               value={form.codiceFiscaleProprietario}
               onChange={handleChange}
               required
+              minLength={16}
+              maxLength={16}
             />
           </div>
         </div>
