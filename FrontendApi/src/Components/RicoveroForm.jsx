@@ -1,16 +1,22 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
+import { useNavigate } from "react-router-dom";
 
 const RicoveroForm = () => {
+  const token = useSelector((state) => state.auth.token);
+  const [animali, setAnimali] = useState([]);
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     dataInizio: new Date().toISOString().split("T")[0],
     descrizione: "",
     animaleId: "",
+    tipologia: "",
+    coloreMantello: "",
+    microchipPresente: false,
+    numeroMicrochip: "",
   });
-
-  const [animali, setAnimali] = useState([]);
-  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     const fetchAnimali = async () => {
@@ -31,13 +37,42 @@ const RicoveroForm = () => {
   }, [token]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+
+    if (name === "animaleId") {
+      if (value === "") {
+        // Nessun animale selezionato → inserimento manuale
+        setForm((prev) => ({
+          ...prev,
+          animaleId: "",
+          tipologia: "",
+          coloreMantello: "",
+          microchipPresente: false,
+          numeroMicrochip: "",
+        }));
+      } else {
+        const selected = animali.find((a) => a.animaleId === value);
+        if (selected) {
+          setForm((prev) => ({
+            ...prev,
+            animaleId: selected.animaleId,
+            tipologia: selected.tipologia,
+            coloreMantello: selected.coloreMantello,
+            microchipPresente: selected.microchipPresente,
+            numeroMicrochip: selected.numeroMicrochip,
+          }));
+        }
+      }
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       await fetchWithAuth(
         "https://localhost:7028/api/ricovero",
@@ -45,18 +80,25 @@ const RicoveroForm = () => {
         form,
         token
       );
-
       alert("✅ Ricovero registrato con successo!");
+
       setForm({
         dataInizio: new Date().toISOString().split("T")[0],
         descrizione: "",
         animaleId: "",
+        tipologia: "",
+        coloreMantello: "",
+        microchipPresente: false,
+        numeroMicrochip: "",
       });
+      navigate("/ricoveri");
     } catch (err) {
       console.error("Errore:", err);
       alert("❌ Errore nella registrazione del ricovero.");
     }
   };
+
+  const isManual = form.animaleId === "";
 
   return (
     <div className="card p-4">
@@ -73,6 +115,7 @@ const RicoveroForm = () => {
             required
           />
         </div>
+
         <div className="mb-3">
           <label>Descrizione</label>
           <textarea
@@ -83,16 +126,16 @@ const RicoveroForm = () => {
             required
           />
         </div>
+
         <div className="mb-3">
-          <label>Animale</label>
+          <label>Animale registrato</label>
           <select
             className="form-select"
             name="animaleId"
             value={form.animaleId}
             onChange={handleChange}
-            required
           >
-            <option value="">Seleziona un animale...</option>
+            <option value="">-- Inserimento manuale --</option>
             {animali.map((a) => (
               <option key={a.animaleId} value={a.animaleId}>
                 {a.nomeAnimale} ({a.tipologia})
@@ -100,6 +143,57 @@ const RicoveroForm = () => {
             ))}
           </select>
         </div>
+
+        <div className="mb-3">
+          <label>Tipologia</label>
+          <input
+            type="text"
+            className="form-control"
+            name="tipologia"
+            value={form.tipologia}
+            onChange={handleChange}
+            required
+            readOnly={!isManual}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label>Colore Mantello</label>
+          <input
+            type="text"
+            className="form-control"
+            name="coloreMantello"
+            value={form.coloreMantello}
+            onChange={handleChange}
+            required
+            readOnly={!isManual}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label me-3">Microchip presente?</label>
+          <input
+            type="checkbox"
+            name="microchipPresente"
+            className="form-check-input"
+            checked={form.microchipPresente}
+            onChange={handleChange}
+            disabled={!isManual}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label>Numero Microchip</label>
+          <input
+            type="text"
+            className="form-control"
+            name="numeroMicrochip"
+            value={form.numeroMicrochip || ""}
+            onChange={handleChange}
+            readOnly={!isManual}
+          />
+        </div>
+
         <button type="submit" className="btn btn-primary">
           Salva Ricovero
         </button>

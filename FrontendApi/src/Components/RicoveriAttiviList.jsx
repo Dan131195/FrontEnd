@@ -54,6 +54,7 @@ const RicoveriAttiviList = () => {
         { dataFine }
       );
       alert("✅ Ricovero chiuso con successo.");
+
       fetchRicoveri();
     } catch (err) {
       console.error("Errore:", err);
@@ -69,7 +70,7 @@ const RicoveriAttiviList = () => {
       ) : (
         <div className="table-responsive">
           <table className="table table-bordered align-middle">
-            <thead className="table-light">
+            <thead className="table-primary">
               <tr>
                 <th>Data Inizio</th>
                 <th>Descrizione</th>
