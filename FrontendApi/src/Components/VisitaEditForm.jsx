@@ -16,6 +16,8 @@ const VisitaEditForm = () => {
   });
   const [animali, setAnimali] = useState([]);
 
+  const [animali, setAnimali] = useState([]);
+
   useEffect(() => {
     const fetchVisita = async () => {
       try {
@@ -38,6 +40,7 @@ const VisitaEditForm = () => {
 
     const fetchAnimali = async () => {
       try {
+
         const data = await fetchWithAuth("https://localhost:7028/api/animale");
         setAnimali(data);
       } catch (err) {
@@ -46,7 +49,10 @@ const VisitaEditForm = () => {
     };
 
     fetchAnimali();
+
+
     fetchVisita();
+    fetchAnimali();
   }, [id, token]);
 
   const handleChange = (e) => {
@@ -74,7 +80,7 @@ const VisitaEditForm = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Modifica Visita</h3>
+      <h2 className="mb-3">Modifica Visita</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Data Visita</label>
@@ -111,7 +117,9 @@ const VisitaEditForm = () => {
         </div>
 
         <div className="mb-3">
+
           <label className="form-label">ID Animale</label>
+
           <select
             className="form-select"
             name="animaleId"
@@ -119,10 +127,12 @@ const VisitaEditForm = () => {
             onChange={handleChange}
             required
           >
+
             <option value="">-- Seleziona un ID animale --</option>
             {animali.map((a) => (
               <option key={a.animaleId} value={a.animaleId}>
                 {a.nomeAnimale} ({a.animaleId})
+
               </option>
             ))}
           </select>

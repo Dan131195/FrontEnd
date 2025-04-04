@@ -68,7 +68,7 @@ const VenditeInterneList = () => {
 
   return (
     <div className="myContainer p-4">
-      <h3 className="mb-3">Vendite Interne</h3>
+      <h2 className="mb-3">Vendite Interne</h2>
       <button
         className="btn btn-sm btn-primary"
         title="Modifica"
@@ -81,7 +81,7 @@ const VenditeInterneList = () => {
       ) : (
         <div className="table-responsive my-2">
           <table className="table table-bordered">
-            <thead className="table-light">
+            <thead className="table-primary">
               <tr>
                 <th>Data</th>
                 <th>Codice Fiscale Cliente</th>

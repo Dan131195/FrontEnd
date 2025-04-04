@@ -5,22 +5,27 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+
 .mainContainer {
   width: 85%;
   margin: auto;
 }
+
 .myContainer {
   background-color: #ffffffeb;
   border-radius: 10px;
 }
+
 .myContainer2 {
   background-color: #ffffffec;
   border-radius: 10px;
 }
+
 .logoClinica {
   width: 3rem;
   border-radius: 50%;
 }
+
 .nav-link {
   color: #fff !important;
   font-size: 1.2em !important;
@@ -40,39 +45,62 @@ i:hover {
   flex-direction: column;
   min-height: 100vh;
 }
+
 main {
   flex-grow: 1;
 }
+
 .loginBtn:hover {
   color: #0d6efd !important;
   font-weight: bold;
 }
+
 #petsImg {
-  width: 150px;
+  width: 250px;
 }
+
 .myNav,
 footer {
   opacity: 95%;
   background-color: #313234;
 }
+
 .navbar-toggler-icon {
   color: #fff !important;
 }
+
 .petLogo {
   width: 250px;
 }
+
 .petLogoList {
   width: 50px;
 }
+
 h1,
-h3,
+h2,
 h2 {
   color: #27b9b6 !important;
 }
+
 #medRecord {
   width: 100px;
 }
+
 #homeImg {
   width: 60%;
   margin: 10px auto;
+}
+
+#recoveryImg {
+  width: 15%;
+}
+
+.btn-outline-primary,
+.btn-outline-success {
+  border-width: 2px !important;
+}
+
+#pharmacyImg {
+  width: 13%;
 }

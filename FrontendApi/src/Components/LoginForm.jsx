@@ -71,7 +71,7 @@ const LoginForm = () => {
 
   return (
     <div className="myContainer p-4 w-50 m-auto">
-      <h3>Login</h3>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label>Email:</label>
