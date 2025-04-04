@@ -4,7 +4,6 @@ import AnimaleList from "./Components/AnimaleList";
 import AnimaleForm from "./Components/AnimaleForm";
 import VisitaForm from "./Components/VisitaForm";
 import VisiteList from "./Components/VisiteListe";
-import VenditaForm from "./Components/VenditaForm";
 import VenditaList from "./Components/VenditaList";
 import RicoveriAttiviList from "./Components/RicoveriAttiviList";
 import RicoveriList from "./Components/RicoveriList.jsx";
@@ -76,7 +75,6 @@ const App = () => {
             <Route path="/prodotti" element={<ProdottoList />} />
 
             <Route path="/vendite-interne" element={<VenditeInterneList />} />
-            <Route path="/vendite/nuova" element={<VenditaForm />} />
             <Route path="/vendite" element={<VenditaList />} />
             <Route
               path="/vendite-interne/nuova"

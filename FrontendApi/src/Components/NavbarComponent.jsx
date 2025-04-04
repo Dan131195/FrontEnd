@@ -20,9 +20,9 @@ const NavbarComponent = () => {
   };
 
   return (
-    <div className="container-fluid bg-primary">
-      <Container className="bg-primary">
-        <nav className="navbar navbar-expand-lg bg-primary">
+    <div className="container-fluid myNav">
+      <Container className="">
+        <nav className="navbar navbar-expand-lg">
           <Link className="navbar-brand text-white" to="/">
             <img
               src="../src/assets/img/logo.jpg"
@@ -32,12 +32,12 @@ const NavbarComponent = () => {
           </Link>
 
           <button
-            className="navbar-toggler"
+            className="navbar-toggler text-white border border-light"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
           >
-            <span className="navbar-toggler-icon" />
+            <i class="bi bi-list"></i>
           </button>
 
           <div className="collapse navbar-collapse" id="navbarNav">

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
+import dogImg from "../assets/img/dog.png";
+import catImg from "../assets/img/cat.png";
+import parotImg from "../assets/img/parot.png";
 
 const AnimaleList = () => {
   const [animali, setAnimali] = useState([]);
@@ -41,13 +44,26 @@ const AnimaleList = () => {
     navigate(`/animali/dettaglio/${id}`);
   };
 
+  const getImageByTipo = (tipo) => {
+    switch (tipo) {
+      case "Cane":
+        return dogImg;
+      case "Gatto":
+        return catImg;
+      case "Pappagallo":
+        return parotImg;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="">
+    <div className="py-4">
       <div className=" myContainer shadow-sm border-0 p-3">
         <div className="card-body">
           <div className="d-flex justify-content-between">
             <div className="">
-              <h2 className="mb-4 text-primary">Elenco Animali Registrati</h2>
+              <h2 className="mb-4">Elenco Animali Registrati</h2>
               {userRole == "Veterinario" && (
                 <Link
                   className="btn btn-outline-primary mb-4"
@@ -73,6 +89,7 @@ const AnimaleList = () => {
               <table className="table table-hover align-middle table-striped">
                 <thead className="table-primary">
                   <tr>
+                    <th></th>
                     <th>Nome</th>
                     <th>Tipologia</th>
                     <th>Colore</th>
@@ -85,6 +102,13 @@ const AnimaleList = () => {
                 <tbody className="table-group-divider">
                   {animali.map((a) => (
                     <tr key={a.id}>
+                      <td>
+                        <img
+                          src={getImageByTipo(a.tipologia)}
+                          alt="Logo pet"
+                          className="petLogoList"
+                        />
+                      </td>
                       <td>{a.nomeAnimale}</td>
                       <td>{a.tipologia}</td>
                       <td>{a.coloreMantello}</td>

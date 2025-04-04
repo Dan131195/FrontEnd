@@ -51,7 +51,7 @@ const VisiteList = () => {
     <div className="py-4">
       <div className="myContainer shadow-sm border-0 p-3">
         <div className="card-body ">
-          <h2 className="mb-4 text-primary">Elenco Visite Veterinarie</h2>
+          <h2 className="mb-4">Elenco Visite Veterinarie</h2>
 
           <Link className="btn btn-outline-primary mb-4" to="/visite">
             <i className="bi bi-plus-circle me-2"></i>Aggiungi una visita

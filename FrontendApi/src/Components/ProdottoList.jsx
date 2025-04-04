@@ -61,7 +61,7 @@ const ProdottoList = () => {
       ) : (
         <div className="row mt-4">
           {prodotti.map((p) => (
-            <div key={p.prodottoId} className="col-6 col-lg-3 mb-4">
+            <div key={p.prodottoId} className="col-6 col-lg-2 mb-4">
               <div className="card h-100 shadow-sm">
                 <img
                   src={
