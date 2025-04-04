@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
+import { useNavigate } from "react-router-dom";
 
 const VenditeInterneList = () => {
   const [venditeInterne, setVenditeInterne] = useState([]);
   const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVenditeInterne = async () => {
@@ -24,6 +26,10 @@ const VenditeInterneList = () => {
     fetchVenditeInterne();
   }, [token]);
 
+  const handleEditVendita = (id) => {
+    navigate(`/vendita/modifica/${id}`);
+  };
+
   return (
     <div className="card p-4">
       <h3 className="mb-3">Vendite Interne</h3>
@@ -39,6 +45,7 @@ const VenditeInterneList = () => {
                 <th>ID Animale</th>
                 <th>Prodotto</th>
                 <th>Ricetta</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -49,6 +56,15 @@ const VenditeInterneList = () => {
                   <td>{v.animaleId}</td>
                   <td>{v.prodottoId}</td>
                   <td>{v.numeroRicetta || "-"}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-warning"
+                      title="Modifica"
+                      onClick={() => handleEditVendita(v.id)}
+                    >
+                      <i className="bi bi-pencil-square"></i>
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

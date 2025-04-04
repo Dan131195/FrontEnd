@@ -4,7 +4,6 @@ import AnimaleList from "./Components/AnimaleList";
 import AnimaleForm from "./Components/AnimaleForm";
 import VisitaForm from "./Components/VisitaForm";
 import VisiteList from "./Components/VisiteListe";
-import VenditaList from "./Components/VenditaList";
 import RicoveriAttiviList from "./Components/RicoveriAttiviList";
 import RicoveriList from "./Components/RicoveriList.jsx";
 import HomePage from "./Components/HomePage";
@@ -26,6 +25,8 @@ import VenditaInternaForm from "./Components/VenditaInternaForm";
 import VenditeInterneList from "./Components/VenditeInterneList.jsx";
 import RicercaMicrochip from "./Components/RicercaMicrochip.jsx";
 import FooterComponent from "./Components/FooterComponent.jsx";
+import VisitaEditForm from "./Components/VisitaEditForm.jsx";
+import VenditaEditForm from "./Components/VenditaEditForm.jsx";
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/registrati" element={<RegistrationForm />} />
 
+            {/* Animali */}
             <Route path="/animali/list" element={<AnimaleList />} />
             <Route path="/animali/nuovo" element={<AnimaleForm />} />
             <Route path="/animali/modifica/:id" element={<AnimaleEditForm />} />
@@ -47,9 +49,12 @@ const App = () => {
               element={<AnimaleDettaglio />}
             />
 
+            {/* Visite */}
             <Route path="/visite/nuova" element={<VisitaForm />} />
             <Route path="/visite" element={<VisiteList />} />
+            <Route path="/visite/modifica/:id" element={<VisitaEditForm />} />
 
+            {/* Ricoveri */}
             <Route path="/ricoveri" element={<RicoveriList />} />
             <Route path="/ricoveri/attivi" element={<RicoveriAttiviList />} />
             <Route path="/ricovero/nuovo" element={<RicoveroForm />} />
@@ -63,6 +68,7 @@ const App = () => {
             />
             <Route path="/ricerca/microchip" element={<RicercaMicrochip />} />
 
+            {/* Prodotti */}
             <Route
               path="/prodotto/modifica/:id"
               element={<ProdottoEditForm />}
@@ -74,12 +80,13 @@ const App = () => {
             <Route path="/prodotto/nuovo" element={<ProdottoForm />} />
             <Route path="/prodotti" element={<ProdottoList />} />
 
+            {/* Vendite */}
             <Route path="/vendite-interne" element={<VenditeInterneList />} />
-            <Route path="/vendite" element={<VenditaList />} />
             <Route
               path="/vendite-interne/nuova"
               element={<VenditaInternaForm />}
             />
+            <Route path="/vendita/modifica/:id" element={<VenditaEditForm />} />
           </Routes>
         </main>
 
