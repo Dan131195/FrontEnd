@@ -6,6 +6,7 @@ import catImg from "../assets/img/cat.png";
 import parotImg from "../assets/img/parot.png";
 import snakeImg from "../assets/img/snake1.png";
 import pawImg from "../assets/img/paw.png";
+import petsImg from "../assets/img/pets2.png";
 
 const AnimaleList = () => {
   const [animali, setAnimali] = useState([]);
@@ -78,12 +79,7 @@ const AnimaleList = () => {
               )}
             </div>
 
-            <img
-              src="../src/assets/img/pets.png"
-              alt="Pets image"
-              id="petsImg"
-              className="me-4"
-            />
+            <img src={petsImg} alt="Pets image" id="petsImg" className="me-4" />
           </div>
 
           {animali.length === 0 ? (

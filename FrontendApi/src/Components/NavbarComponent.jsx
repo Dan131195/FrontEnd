@@ -46,17 +46,17 @@ const NavbarComponent = () => {
                 <ul className="navbar-nav">
                   <li className="nav-item">
                     <Link className="nav-link text-white" to="/animali/list">
-                      Animali
+                      <i class="bi bi-journal-medical me-1"></i>Animali
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link text-white" to="/visite">
-                      Visite
+                    <Link className="nav-link text-white mx-md-3" to="/visite">
+                      <i className="bi bi-clipboard2-pulse me-1"></i>Visite
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link text-white" to="/ricoveri">
-                      Ricoveri
+                      <i class="bi bi-hospital me-1"></i>Ricoveri
                     </Link>
                   </li>
                 </ul>
@@ -87,9 +87,9 @@ const NavbarComponent = () => {
                   </>
                 ) : (
                   <>
-                    <li className="nav-item">
+                    <li className="nav-item me-md-3">
                       <Link className="nav-link text-white" to="/prodotti">
-                        Farmacia
+                        <i class="bi bi-capsule-pill me-1"></i>Farmacia
                       </Link>
                     </li>
 

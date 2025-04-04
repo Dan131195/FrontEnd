@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
+import pharmacyImg from "../assets/img/pharmacy.png";
 
 const ProdottoList = () => {
   const [prodotti, setProdotti] = useState([]);
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("ruolo");
 
   useEffect(() => {
     fetchProdotti();
@@ -42,18 +44,30 @@ const ProdottoList = () => {
 
   return (
     <div className="myContainer p-4">
-      <h3 className="mb-3">Elenco Prodotti</h3>
-      <div className="d-flex align-items-center">
-        <button
-          className="btn btn-warning btn-sm me-2"
-          onClick={handleAddProdotto}
-        >
-          <i class="bi bi-plus-circle me-1"></i>Aggiungi un prodotto
-        </button>
+      <div className="d-flex justify-content-between">
+        <div>
+          <h2 className="mb-4">Elenco Prodotti</h2>
+          <div className="d-flex align-items-center">
+            {userRole == "Veterinario" && (
+              <button
+                className="btn btn-warning me-2"
+                onClick={handleAddProdotto}
+              >
+                <i className="bi bi-plus-circle me-1"></i>Aggiungi un prodotto
+              </button>
+            )}
 
-        <Link className="btn-primary btn" to="/vendite-interne">
-          Registro Vendite
-        </Link>
+            <Link className="btn-primary btn" to="/vendite-interne">
+              <i className="bi bi-card-list me-1"></i> Registro Vendite
+            </Link>
+          </div>
+        </div>
+        <img
+          src={pharmacyImg}
+          alt="Pharmacy image"
+          id="pharmacyImg"
+          className="me-4"
+        />
       </div>
 
       {prodotti.length === 0 ? (

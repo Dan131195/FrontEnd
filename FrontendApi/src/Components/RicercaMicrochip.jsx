@@ -28,7 +28,7 @@ const RicercaMicrochip = () => {
 
   return (
     <div className="card p-4 mt-4 w-50 m-auto">
-      <h3 className="mb-3">🔍 Cerca Microchip</h3>
+      <h2 className="mb-3">🔍 Cerca Microchip</h2>
 
       <form onSubmit={handleSubmit} className="mb-3">
         <div className="input-group">

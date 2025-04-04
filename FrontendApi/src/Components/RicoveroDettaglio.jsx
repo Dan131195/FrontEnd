@@ -32,7 +32,7 @@ const RicoveroDettaglio = () => {
 
   return (
     <div className="card p-4 shadow-sm">
-      <h3 className="mb-4 text-primary">Dettagli Ricovero</h3>
+      <h2 className="mb-4 text-primary">Dettagli Ricovero</h2>
 
       <dl className="row">
         <dt className="col-sm-4">ID Ricovero</dt>
@@ -77,7 +77,7 @@ const RicoveroDettaglio = () => {
       </dl>
 
       <Link className="btn btn-secondary" to="/ricoveri">
-        🔙 Indietro
+        <i class="bi bi-arrow-left-circle me-1"></i>Indietro
       </Link>
     </div>
   );

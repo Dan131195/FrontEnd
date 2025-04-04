@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
@@ -10,7 +10,26 @@ const VisitaForm = () => {
     animaleId: "",
   });
 
+  const [animali, setAnimali] = useState([]);
   const token = useSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    const fetchAnimali = async () => {
+      try {
+        const data = await fetchWithAuth(
+          "https://localhost:7028/api/animale",
+          "GET",
+          null,
+          token
+        );
+        setAnimali(data);
+      } catch (err) {
+        console.error("Errore nel caricamento degli animali:", err);
+      }
+    };
+
+    fetchAnimali();
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +45,7 @@ const VisitaForm = () => {
         form,
         token
       );
-      alert("Visita registrata con successo!");
+      alert("✅ Visita registrata con successo!");
       setForm({
         dataVisita: new Date().toISOString().slice(0, 10),
         esameObiettivo: "",
@@ -35,13 +54,13 @@ const VisitaForm = () => {
       });
     } catch (error) {
       console.error(error);
-      alert("Errore nella registrazione della visita.");
+      alert("❌ Errore nella registrazione della visita.");
     }
   };
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Registra una Visita Veterinaria</h3>
+      <h2 className="mb-3">Registra una Visita Veterinaria</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Data Visita</label>
@@ -78,15 +97,21 @@ const VisitaForm = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">ID Animale</label>
-          <input
-            type="text"
-            className="form-control"
+          <label className="form-label">Animale</label>
+          <select
+            className="form-select"
             name="animaleId"
             value={form.animaleId}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Seleziona un animale...</option>
+            {animali.map((a) => (
+              <option key={a.animaleId} value={a.animaleId}>
+                {a.nomeAnimale} ({a.tipologia})
+              </option>
+            ))}
+          </select>
         </div>
 
         <button type="submit" className="btn btn-primary">

@@ -56,7 +56,7 @@ const AnimaleForm = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Registra un nuovo animale</h3>
+      <h2 className="mb-3">Registra un nuovo animale</h2>
       <form onSubmit={handleSubmit}>
         <div className="row g-3">
           <div className="col-md-6">

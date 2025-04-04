@@ -66,7 +66,7 @@ const AnimaleDettaglio = () => {
     <div className="myContainer2 border border-1 rounded p-3 mt-4">
       <div className="d-flex justify-content-between">
         <div>
-          <h3 className="mb-4">Dettaglio Animale</h3>
+          <h2 className="mb-4">Dettaglio Animale</h2>
 
           <p>
             <strong>Nome:</strong> {animale.nomeAnimale}

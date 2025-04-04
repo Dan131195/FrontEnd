@@ -43,7 +43,7 @@ const ProdottoForm = () => {
 
   return (
     <div className="card p-4">
-      <h3 className="mb-3">Aggiungi Prodotto</h3>
+      <h2 className="mb-3">Aggiungi Prodotto</h2>
       <form onSubmit={handleSubmit}>
         {Object.entries(form).map(([key, value]) => (
           <div className="mb-3" key={key}>
