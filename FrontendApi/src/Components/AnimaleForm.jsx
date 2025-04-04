@@ -163,10 +163,10 @@ const AnimaleForm = () => {
         </div>
 
         <button type="submit" className="btn btn-success mt-4">
-          Salva Animale
+          <i class="bi bi-floppy me-1"></i>Salva Animale
         </button>
         <Link className="btn btn-secondary mt-4 ms-2" to="/animali/list">
-          Indietro
+          <i class="bi bi-arrow-left-circle me-1"></i>Indietro
         </Link>
       </form>
     </div>

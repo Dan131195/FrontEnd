@@ -58,8 +58,8 @@ const ProdottoForm = () => {
             />
           </div>
         ))}
-        <button type="submit" className="btn btn-primary">
-          Salva
+        <button type="submit" className="btn btn-success">
+          <i class="bi bi-floppy me-1"></i>Salva
         </button>
       </form>
     </div>

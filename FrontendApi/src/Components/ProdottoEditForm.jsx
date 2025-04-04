@@ -68,8 +68,15 @@ const ProdottoEditForm = () => {
             />
           </div>
         ))}
-        <button type="submit" className="btn btn-primary">
-          Salva modifiche
+        <button type="submit" className="btn btn-success">
+          <i class="bi bi-floppy me-1"></i>Salva modifiche
+        </button>
+        <button
+          type="submit"
+          className="btn btn-secondary"
+          onClick={() => navigate("/prodotti")}
+        >
+          <i class="bi bi-arrow-left-circle"></i>Indietro
         </button>
       </form>
     </div>
