@@ -72,9 +72,9 @@ const RicoveriList = () => {
 
   return (
     <div className="py-4">
-      <div className=" myContainer shadow-sm border-0 p-3">
+      <div className=" myContainer shadow-sm border-0 p-3 my-4">
         <div className="card-body">
-          <h2 className="mb-4 text-primary">Ricoveri</h2>
+          <h2 className="mb-4">Ricoveri</h2>
           {userRole === "Veterinario" && (
             <button
               className="btn btn-outline-primary mb-4"

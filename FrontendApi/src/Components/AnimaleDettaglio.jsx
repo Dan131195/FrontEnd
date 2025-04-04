@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
-// import dogImg from "../assets/img/dog.jpg";
-// import catImg from "../assets/img/cat.png";
-// import parotImg from "../assets/img/parot.png";
+import dogImg from "../assets/img/dog.png";
+import catImg from "../assets/img/cat.png";
+import parotImg from "../assets/img/parot.png";
 
 const AnimaleDettaglio = () => {
   const { id } = useParams();
@@ -42,18 +42,18 @@ const AnimaleDettaglio = () => {
     }
   };
 
-  // const getImageByTipo = (tipo) => {
-  //   switch (tipo) {
-  //     case "Cane":
-  //       return dogImg;
-  //     case "Gatto":
-  //       return catImg;
-  //     case "Pappagallo":
-  //       return parotImg;
-  //     default:
-  //       return null;
-  //   }
-  // };
+  const getImageByTipo = (tipo) => {
+    switch (tipo) {
+      case "Cane":
+        return dogImg;
+      case "Gatto":
+        return catImg;
+      case "Pappagallo":
+        return parotImg;
+      default:
+        return null;
+    }
+  };
 
   if (errore) return <div className="alert alert-danger">{errore}</div>;
   if (!animale) return <p>Caricamento in corso...</p>;
@@ -96,10 +96,14 @@ const AnimaleDettaglio = () => {
             {animale.codiceFiscaleProprietario}
           </p>
         </div>
-        {/* <div>
+        <div>
           {console.log(animale.tipologia)}
-          <img src={getImageByTipo(animale.tipologia)} alt="Logo pet" />
-        </div> */}
+          <img
+            src={getImageByTipo(animale.tipologia)}
+            alt="Logo pet"
+            className="petLogo"
+          />
+        </div>
       </div>
 
       <hr />

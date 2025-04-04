@@ -1,6 +1,6 @@
 body {
   min-height: 100vh;
-  background-image: url("https://img.pgol.it/meta/0100-veterinari.jpg");
+  background-image: url("https://img.freepik.com/free-vector/hand-drawn-paw-prints-background_23-2151123098.jpg?t=st=1743712818~exp=1743716418~hmac=c46df18a3ce224be7cd2936616ad25aa1aea868cc3d9d8d6c77a3ba43f5ea232&w=1380");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -10,11 +10,11 @@ body {
   margin: auto;
 }
 .myContainer {
-  background-color: #ffffffbe;
+  background-color: #ffffffeb;
   border-radius: 10px;
 }
 .myContainer2 {
-  background-color: #ffffffdd;
+  background-color: #ffffffec;
   border-radius: 10px;
 }
 .logoClinica {
@@ -49,4 +49,22 @@ main {
 }
 #petsImg {
   width: 150px;
+}
+.myNav,
+footer {
+  opacity: 95%;
+  background-color: #313234;
+}
+.navbar-toggler-icon {
+  color: #fff !important;
+}
+.petLogo {
+  width: 250px;
+}
+.petLogoList {
+  width: 50px;
+}
+h3,
+h2 {
+  color: #27b9b6 !important;
 }
