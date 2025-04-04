@@ -81,7 +81,7 @@ const VenditeInterneList = () => {
       ) : (
         <div className="table-responsive my-2">
           <table className="table table-bordered">
-            <thead className="table-light">
+            <thead className="table-primary">
               <tr>
                 <th>Data</th>
                 <th>Codice Fiscale Cliente</th>
