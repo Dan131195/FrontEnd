@@ -14,6 +14,7 @@ const VisitaEditForm = () => {
     curaPrescritta: "",
     animaleId: "",
   });
+  const [animali, setAnimali] = useState([]);
 
   const [animali, setAnimali] = useState([]);
 
@@ -39,17 +40,16 @@ const VisitaEditForm = () => {
 
     const fetchAnimali = async () => {
       try {
-        const data = await fetchWithAuth(
-          "https://localhost:7028/api/animale",
-          "GET",
-          null,
-          token
-        );
+
+        const data = await fetchWithAuth("https://localhost:7028/api/animale");
         setAnimali(data);
       } catch (err) {
-        console.error("Errore nel recupero degli animali:", err);
+        console.error("Errore nel caricamento animali:", err);
       }
     };
+
+    fetchAnimali();
+
 
     fetchVisita();
     fetchAnimali();
@@ -117,7 +117,9 @@ const VisitaEditForm = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Animale</label>
+
+          <label className="form-label">ID Animale</label>
+
           <select
             className="form-select"
             name="animaleId"
@@ -125,10 +127,12 @@ const VisitaEditForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="">Seleziona un animale...</option>
+
+            <option value="">-- Seleziona un ID animale --</option>
             {animali.map((a) => (
               <option key={a.animaleId} value={a.animaleId}>
-                {a.nomeAnimale} ({a.tipologia})
+                {a.nomeAnimale} ({a.animaleId})
+
               </option>
             ))}
           </select>

@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
+
 import { useSelector } from "react-redux";
 import { fetchWithAuth } from "../Utils/fetchWithAuth";
 
@@ -16,20 +18,19 @@ const VisitaForm = () => {
   useEffect(() => {
     const fetchAnimali = async () => {
       try {
-        const data = await fetchWithAuth(
-          "https://localhost:7028/api/animale",
-          "GET",
-          null,
-          token
-        );
+
+        const data = await fetchWithAuth("https://localhost:7028/api/animale");
         setAnimali(data);
       } catch (err) {
-        console.error("Errore nel caricamento degli animali:", err);
+        console.error("Errore nel caricamento animali:", err);
+
       }
     };
 
     fetchAnimali();
-  }, [token]);
+
+  }, []);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,7 +98,9 @@ const VisitaForm = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Animale</label>
+
+          <label className="form-label">ID Animale</label>
+
           <select
             className="form-select"
             name="animaleId"
@@ -105,10 +108,12 @@ const VisitaForm = () => {
             onChange={handleChange}
             required
           >
-            <option value="">Seleziona un animale...</option>
+
+            <option value="">-- Seleziona un ID animale --</option>
             {animali.map((a) => (
               <option key={a.animaleId} value={a.animaleId}>
-                {a.nomeAnimale} ({a.tipologia})
+                {a.nomeAnimale} ({a.animaleId})
+
               </option>
             ))}
           </select>
